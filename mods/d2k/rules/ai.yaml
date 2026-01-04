@@ -262,6 +262,13 @@ Player:
 	BuildingRepairBotModule:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
 		RepairAllBuildingsCoolDown: -1
+	BridgeRepairBotModule:
+		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
+		CheckInterval: 150
+		RepairActorTypes: engineer
+		MinimumCashForProduction: 300
+		MaxRepairUnitsPerBridge: 2
+		MaxSearchDistance: 50
 	SquadManagerBotModule@omnius:
 		RequiresCondition: enable-omnius-ai
 		SquadSize: 8

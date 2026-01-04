@@ -257,6 +257,13 @@ Player:
 			sam: 3000
 	BuildingRepairBotModule:
 		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
+	BridgeRepairBotModule:
+		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
+		CheckInterval: 150
+		RepairActorTypes: e6
+		MinimumCashForProduction: 300
+		MaxRepairUnitsPerBridge: 2
+		MaxSearchDistance: 50
 	SquadManagerBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		SquadSize: 50

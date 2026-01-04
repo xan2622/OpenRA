@@ -332,6 +332,13 @@ Player:
 		PowerDownTypes: dome,tsla,mslo,agun,sam
 	BuildingRepairBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+	BridgeRepairBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		CheckInterval: 150
+		RepairActorTypes: e6
+		MinimumCashForProduction: 300
+		MaxRepairUnitsPerBridge: 2
+		MaxSearchDistance: 50
 	SquadManagerBotModule@rush:
 		RequiresCondition: enable-rush-ai
 		SquadSize: 20

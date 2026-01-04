@@ -78,6 +78,13 @@ Player:
 			naobel: 3
 	BuildingRepairBotModule:
 		RequiresCondition: enable-test-ai
+	BridgeRepairBotModule:
+		RequiresCondition: enable-test-ai
+		CheckInterval: 150
+		RepairActorTypes: engineer
+		MinimumCashForProduction: 300
+		MaxRepairUnitsPerBridge: 2
+		MaxSearchDistance: 50
 	SquadManagerBotModule@test:
 		RequiresCondition: enable-test-ai
 		SquadSize: 20
