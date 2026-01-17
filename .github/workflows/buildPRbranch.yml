@@ -8,6 +8,7 @@ permissions:
   contents: read
   pull-requests: write
   issues: write
+  actions: read
 
 jobs:
   check-command:
@@ -86,6 +87,8 @@ jobs:
     runs-on: ubuntu-22.04
     needs: check-command
     if: needs.check-command.outputs.should_build == 'true'
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
     steps:
       - name: Clone Repository
         uses: actions/checkout@v6
@@ -109,6 +112,7 @@ jobs:
           ./packaging/linux/buildpackage.sh "${BUILD_VERSION}" "${PWD}/build/linux"
 
       - name: Upload Linux Artifacts
+        id: upload
         uses: actions/upload-artifact@v6
         with:
           name: linux-appimages-pr-${{ needs.check-command.outputs.pr_number }}
@@ -117,9 +121,11 @@ jobs:
 
   build-macos:
     name: macOS Disk Image
-    runs-on: macos-13
+    runs-on: macos-15
     needs: check-command
     if: needs.check-command.outputs.should_build == 'true'
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
     steps:
       - name: Clone Repository
         uses: actions/checkout@v6
@@ -142,6 +148,7 @@ jobs:
           ./packaging/macos/buildpackage.sh "${BUILD_VERSION}" "${PWD}/build/macos"
 
       - name: Upload macOS Artifacts
+        id: upload
         uses: actions/upload-artifact@v6
         with:
           name: macos-dmg-pr-${{ needs.check-command.outputs.pr_number }}
@@ -153,6 +160,8 @@ jobs:
     runs-on: ubuntu-22.04
     needs: check-command
     if: needs.check-command.outputs.should_build == 'true'
+    outputs:
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
     steps:
       - name: Clone Repository
         uses: actions/checkout@v6
@@ -177,6 +186,7 @@ jobs:
           ./packaging/windows/buildpackage.sh "${BUILD_VERSION}" "${PWD}/build/windows"
 
       - name: Upload Windows Artifacts
+        id: upload
         uses: actions/upload-artifact@v6
         with:
           name: windows-installers-pr-${{ needs.check-command.outputs.pr_number }}
@@ -223,6 +233,34 @@ jobs:
           echo "macos=$(get_emoji ${{ steps.check-results.outputs.macos_result }})" >> $GITHUB_OUTPUT
           echo "windows=$(get_emoji ${{ steps.check-results.outputs.windows_result }})" >> $GITHUB_OUTPUT
 
+      - name: Build Artifact URLs
+        id: artifact-urls
+        run: |
+          PR_NUMBER="${{ needs.check-command.outputs.pr_number }}"
+          RUN_ID="${{ github.run_id }}"
+          REPO="${{ github.repository }}"
+          SERVER="${{ github.server_url }}"
+
+          # Direct artifact download URLs
+          LINUX_URL="${SERVER}/${REPO}/actions/runs/${RUN_ID}/artifacts/${{ needs.build-linux.outputs.artifact_id }}"
+          MACOS_URL="${SERVER}/${REPO}/actions/runs/${RUN_ID}/artifacts/${{ needs.build-macos.outputs.artifact_id }}"
+          WINDOWS_URL="${SERVER}/${REPO}/actions/runs/${RUN_ID}/artifacts/${{ needs.build-windows.outputs.artifact_id }}"
+
+          # Fallback to run page if artifact_id is empty
+          if [ -z "${{ needs.build-linux.outputs.artifact_id }}" ]; then
+            LINUX_URL="${SERVER}/${REPO}/actions/runs/${RUN_ID}"
+          fi
+          if [ -z "${{ needs.build-macos.outputs.artifact_id }}" ]; then
+            MACOS_URL="${SERVER}/${REPO}/actions/runs/${RUN_ID}"
+          fi
+          if [ -z "${{ needs.build-windows.outputs.artifact_id }}" ]; then
+            WINDOWS_URL="${SERVER}/${REPO}/actions/runs/${RUN_ID}"
+          fi
+
+          echo "linux_url=$LINUX_URL" >> $GITHUB_OUTPUT
+          echo "macos_url=$MACOS_URL" >> $GITHUB_OUTPUT
+          echo "windows_url=$WINDOWS_URL" >> $GITHUB_OUTPUT
+
       - name: Post Success Comment
         if: steps.check-results.outputs.all_success == 'true'
         env:
@@ -231,18 +269,15 @@ jobs:
           gh pr comment ${{ needs.check-command.outputs.pr_number }} --repo ${{ github.repository }} --body \
             "✅ **Build completed successfully!**
 
-          | Platform | Status |
-          |----------|--------|
-          | Linux | ${{ steps.emoji.outputs.linux }} |
-          | macOS | ${{ steps.emoji.outputs.macos }} |
-          | Windows | ${{ steps.emoji.outputs.windows }} |
+          | Platform | Status | Download |
+          |----------|--------|----------|
+          | Linux AppImages | ${{ steps.emoji.outputs.linux }} | [Download](${{ steps.artifact-urls.outputs.linux_url }}) |
+          | macOS Disk Image | ${{ steps.emoji.outputs.macos }} | [Download](${{ steps.artifact-urls.outputs.macos_url }}) |
+          | Windows Installers | ${{ steps.emoji.outputs.windows }} | [Download](${{ steps.artifact-urls.outputs.windows_url }}) |
 
-          📦 **Download artifacts:**
-          - [Linux AppImages](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-          - [macOS Disk Image](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-          - [Windows Installers](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          📦 [View all artifacts](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts)
 
-          Artifacts will be available for 14 days."
+          _Artifacts will be available for 14 days._"
 
       - name: Post Failure Comment
         if: steps.check-results.outputs.all_success == 'false'
@@ -252,12 +287,14 @@ jobs:
           gh pr comment ${{ needs.check-command.outputs.pr_number }} --repo ${{ github.repository }} --body \
             "⚠️ **Build completed with issues**
 
-          | Platform | Status |
-          |----------|--------|
-          | Linux | ${{ steps.emoji.outputs.linux }} |
-          | macOS | ${{ steps.emoji.outputs.macos }} |
-          | Windows | ${{ steps.emoji.outputs.windows }} |
+          | Platform | Status | Download |
+          |----------|--------|----------|
+          | Linux AppImages | ${{ steps.emoji.outputs.linux }} | [Download](${{ steps.artifact-urls.outputs.linux_url }}) |
+          | macOS Disk Image | ${{ steps.emoji.outputs.macos }} | [Download](${{ steps.artifact-urls.outputs.macos_url }}) |
+          | Windows Installers | ${{ steps.emoji.outputs.windows }} | [Download](${{ steps.artifact-urls.outputs.windows_url }}) |
 
-          Please check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.
+          📦 [View all artifacts](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts)
 
-          Successfully built artifacts are still available for download."
+          Please check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for error details.
+
+          _Successfully built artifacts are still available for download (14 days)._"
