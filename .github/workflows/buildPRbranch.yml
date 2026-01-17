@@ -22,6 +22,8 @@ jobs:
       pr_number: ${{ github.event.issue.number }}
       pr_head_ref: ${{ steps.get-pr-info.outputs.head_ref }}
       pr_head_sha: ${{ steps.get-pr-info.outputs.head_sha }}
+      comment_id: ${{ github.event.comment.id }}
+      original_comment: ${{ steps.get-original-comment.outputs.body }}
     steps:
       - name: Check User Permission
         id: check-permission
@@ -60,6 +62,19 @@ jobs:
           echo "head_ref=$HEAD_REF" >> $GITHUB_OUTPUT
           echo "head_sha=$HEAD_SHA" >> $GITHUB_OUTPUT
 
+      - name: Get Original Comment
+        id: get-original-comment
+        if: steps.check-permission.outputs.should_build == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get the original comment body and encode it for safe passing
+          COMMENT_BODY=$(gh api repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }} --jq '.body')
+          # Store in environment file to handle multiline
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMENT_BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Add Reaction to Comment
         if: steps.check-permission.outputs.should_build == 'true'
         env:
@@ -68,19 +83,28 @@ jobs:
           gh api repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions \
             -X POST -f content='rocket'
 
-      - name: Post Build Started Comment
+      - name: Update Comment with Build Started
         if: steps.check-permission.outputs.should_build == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr comment ${{ github.event.issue.number }} --repo ${{ github.repository }} --body \
-            "🚀 **Build triggered!**
+          UPDATED_BODY=$(cat <<'EOF'
+          ${{ steps.get-original-comment.outputs.body }}
 
-          Building commit \`${{ steps.get-pr-info.outputs.head_sha }}\` for Windows, macOS, and Linux.
+          ---
+
+          🚀 **Build triggered!**
+
+          Building commit `${{ steps.get-pr-info.outputs.head_sha }}` for Windows, macOS, and Linux.
 
           You can follow the progress [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
 
-          Artifacts will be available for download once the build completes."
+          Artifacts will be available for download once the build completes.
+          EOF
+          )
+
+          gh api repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }} \
+            -X PATCH -f body="$UPDATED_BODY"
 
   build-linux:
     name: Linux AppImages
@@ -261,13 +285,27 @@ jobs:
           echo "macos_url=$MACOS_URL" >> $GITHUB_OUTPUT
           echo "windows_url=$WINDOWS_URL" >> $GITHUB_OUTPUT
 
-      - name: Post Success Comment
+      - name: Get Current Comment Body
+        id: get-current-comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COMMENT_BODY=$(gh api repos/${{ github.repository }}/issues/comments/${{ needs.check-command.outputs.comment_id }} --jq '.body')
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMENT_BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Update Comment with Success Status
         if: steps.check-results.outputs.all_success == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr comment ${{ needs.check-command.outputs.pr_number }} --repo ${{ github.repository }} --body \
-            "✅ **Build completed successfully!**
+          UPDATED_BODY=$(cat <<'EOF'
+          ${{ steps.get-current-comment.outputs.body }}
+
+          ---
+
+          ✅ **Build completed successfully!**
 
           | Platform | Status | Download |
           |----------|--------|----------|
@@ -277,15 +315,24 @@ jobs:
 
           📦 [View all artifacts](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts)
 
-          _Artifacts will be available for 14 days._"
+          _Artifacts will be available for 14 days._
+          EOF
+          )
 
-      - name: Post Failure Comment
+          gh api repos/${{ github.repository }}/issues/comments/${{ needs.check-command.outputs.comment_id }} \
+            -X PATCH -f body="$UPDATED_BODY"
+
+      - name: Update Comment with Failure Status
         if: steps.check-results.outputs.all_success == 'false'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr comment ${{ needs.check-command.outputs.pr_number }} --repo ${{ github.repository }} --body \
-            "⚠️ **Build completed with issues**
+          UPDATED_BODY=$(cat <<'EOF'
+          ${{ steps.get-current-comment.outputs.body }}
+
+          ---
+
+          ⚠️ **Build completed with issues**
 
           | Platform | Status | Download |
           |----------|--------|----------|
@@ -297,4 +344,9 @@ jobs:
 
           Please check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for error details.
 
-          _Successfully built artifacts are still available for download (14 days)._"
+          _Successfully built artifacts are still available for download (14 days)._
+          EOF
+          )
+
+          gh api repos/${{ github.repository }}/issues/comments/${{ needs.check-command.outputs.comment_id }} \
+            -X PATCH -f body="$UPDATED_BODY"
