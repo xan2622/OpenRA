@@ -33,7 +33,7 @@ button-connection-switchmod-panel-switch = Switch
 button-connection-switchmod-panel-abort = Abort
 
 ## credits.yaml, mainmenu.yaml
-label-openra = OpenRA
+label-openra = OpenRA TEST
 label-credits-title = Credits
 
 ## editor.yaml
