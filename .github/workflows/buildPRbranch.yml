@@ -95,6 +95,7 @@ jobs:
           Click to see the build status
           </summary>
 
+          <br>
           🚀 **Build triggered!**
           Building commit `${{ steps.get-pr-info.outputs.head_sha }}` for Windows, macOS, and Linux.
           You can follow the progress [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
