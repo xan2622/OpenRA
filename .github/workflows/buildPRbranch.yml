@@ -319,6 +319,7 @@ jobs:
           Click to see the download links
           </summary>
 
+          <br>
           🚀 **Build triggered!**
           Building commit `${{ needs.check-command.outputs.pr_head_sha }}` for Windows, macOS, and Linux.
           You can follow the progress [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
@@ -357,6 +358,7 @@ jobs:
           Click to see the download links
           </summary>
 
+          <br>
           🚀 **Build triggered!**
           Building commit `${{ needs.check-command.outputs.pr_head_sha }}` for Windows, macOS, and Linux.
           You can follow the progress [here](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
