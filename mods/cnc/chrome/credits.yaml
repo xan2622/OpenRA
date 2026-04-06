@@ -24,12 +24,15 @@ Container@CREDITS_PANEL:
 					Y: 15
 					Width: PARENT_WIDTH - 30
 					Height: 34
+					FlexDirection: Row
+					Gap: 10
 					Children:
 						Button@MOD_TAB:
+							Positioning: Flex
 							Width: 140
 							Height: 35
 						Button@ENGINE_TAB:
-							X: 150
+							Positioning: Flex
 							Width: 140
 							Height: 35
 							Text: label-openra

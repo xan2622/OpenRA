@@ -47,15 +47,19 @@ Background@ENCYCLOPEDIA_PANEL:
 									TooltipContainer: TOOLTIP_CONTAINER
 									TooltipTemplate: SIMPLE_TOOLTIP
 				Container@ACTOR_INFO:
-					X: PARENT_WIDTH - WIDTH
+					X: 200
 					Y: 30
 					Width: PARENT_WIDTH - 190 - 10
 					Height: PARENT_HEIGHT - 25
+					FlexDirection: Row
+					AlignItems: Start
+					Gap: 10
 					Children:
 						Background@ACTOR_BG:
 							Width: 150
 							Height: 170
 							Background: dialog3
+							Positioning: Flex
 							Children:
 								ActorPreview@ACTOR_PREVIEW:
 									X: 1
@@ -63,10 +67,11 @@ Background@ENCYCLOPEDIA_PANEL:
 									Width: PARENT_WIDTH - 2
 									Height: PARENT_HEIGHT - 2
 						ScrollPanel@ACTOR_DESCRIPTION_PANEL:
-							X: 150 + 10
 							Width: PARENT_WIDTH - 150 - 10
 							Height: 170
 							TopBottomSpacing: 8
+							Positioning: Flex
+							FlexGrow: 1
 							Children:
 								Label@ACTOR_DESCRIPTION:
 									X: 8

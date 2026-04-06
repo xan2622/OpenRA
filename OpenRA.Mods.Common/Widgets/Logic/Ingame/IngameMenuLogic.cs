@@ -16,6 +16,7 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -154,6 +155,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly bool hasError;
 		bool leaving;
 		bool hideMenu;
+		Size lastResolution;
 
 		static bool lastGameEditor = false;
 
@@ -210,12 +212,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Recenter the button container
 			if (buttons.Count > 0)
 			{
-				var expand = (buttons.Count - 1) * buttonStride;
-				buttonContainer.Bounds.X -= expand.X / 2;
-				buttonContainer.Bounds.Y -= expand.Y / 2;
-				buttonContainer.Bounds.Width += expand.X;
-				buttonContainer.Bounds.Height += expand.Y;
+				if (buttonTemplate.Positioning != WidgetLayout.Flex)
+				{
+					var expand = (buttons.Count - 1) * buttonStride;
+					buttonContainer.Bounds.X -= expand.X / 2;
+					buttonContainer.Bounds.Y -= expand.Y / 2;
+					buttonContainer.Bounds.Width += expand.X;
+					buttonContainer.Bounds.Height += expand.Y;
+				}
+				else
+				{
+					RecenterFlexButtonContainer();
+				}
 			}
+			else
+				RecenterFlexButtonContainer();
+
+			lastResolution = Game.Renderer.Resolution;
 
 			var panelRoot = widget.GetOrNull("PANEL_ROOT");
 			if (panelRoot != null && world.Type != WorldType.Editor)
@@ -230,6 +243,56 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				gameInfoPanel.IsVisible = () => !hideMenu;
 			}
+		}
+
+		public override void Tick()
+		{
+			var currentResolution = Game.Renderer.Resolution;
+			if (lastResolution != currentResolution)
+			{
+				lastResolution = currentResolution;
+				RecenterFlexButtonContainer();
+			}
+		}
+
+		void RecenterFlexButtonContainer()
+		{
+			if (buttons.Count == 0 || buttonTemplate.Positioning != WidgetLayout.Flex)
+				return;
+
+			var isRow = buttonContainer.FlexDirection == FlexDirection.Row;
+
+			if (isRow)
+			{
+				var itemW = buttonTemplate.Bounds.Width;
+				var intrinsicW = buttons.Count * itemW
+					+ (buttons.Count - 1) * buttonContainer.Gap
+					+ buttonContainer.Padding.Horizontal
+					+ buttonContainer.Border.Horizontal;
+				buttonContainer.Bounds.X -= (intrinsicW - buttonContainer.Bounds.Width) / 2;
+				buttonContainer.Bounds.Width = intrinsicW;
+			}
+			else
+			{
+				// Include height of non-Flex children (e.g., labels) in the calculation
+				var nonFlexHeight = 0;
+				foreach (var child in buttonContainer.Children)
+				{
+					if (child != buttonTemplate && child.Positioning != WidgetLayout.Flex && child.IsVisible())
+						nonFlexHeight += child.Bounds.Height + child.Margin.Vertical;
+				}
+
+				var itemH = buttonTemplate.Bounds.Height;
+				var intrinsicH = nonFlexHeight
+					+ buttons.Count * itemH
+					+ (buttons.Count - 1) * buttonContainer.Gap
+					+ buttonContainer.Padding.Vertical
+					+ buttonContainer.Border.Vertical;
+				buttonContainer.Bounds.Y -= (intrinsicH - buttonContainer.Bounds.Height) / 2;
+				buttonContainer.Bounds.Height = intrinsicH;
+			}
+
+			buttonContainer.MarkLayoutDirty();
 		}
 
 		public static void OnQuit(World world)
@@ -297,11 +360,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		ButtonWidget AddButton(string id, string label)
 		{
 			var button = buttonTemplate.Clone();
-			var lastButton = buttons.LastOrDefault();
-			if (lastButton != null)
+			if (button.Positioning != WidgetLayout.Flex)
 			{
-				button.Bounds.X = lastButton.Bounds.X + buttonStride.X;
-				button.Bounds.Y = lastButton.Bounds.Y + buttonStride.Y;
+				var lastButton = buttons.LastOrDefault();
+				if (lastButton != null)
+				{
+					button.Bounds.X = lastButton.Bounds.X + buttonStride.X;
+					button.Bounds.Y = lastButton.Bounds.Y + buttonStride.Y;
+				}
 			}
 
 			button.Id = id;

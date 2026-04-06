@@ -37,6 +37,14 @@ namespace OpenRA.Widgets
 
 		static readonly Mediator Mediator = new();
 		static ModData modData;
+		static Size lastResolution;
+		static Size lastNativeResolution;
+
+		static readonly float[] UIScaleSteps = [1f, 1.25f, 1.5f, 1.75f, 2f];
+
+		// The UIScale value explicitly chosen by the user. Used as a ceiling when auto-adjusting
+		// UIScale on window resize, so that enlarging the window restores the user's preference.
+		static float userRequestedUIScale;
 
 		public static void Initialize(ModData modData)
 		{
@@ -103,7 +111,58 @@ namespace OpenRA.Widgets
 			return Game.ModData.WidgetLoader.LoadWidget(args, parent, id);
 		}
 
-		public static void Tick() { Root.TickOuter(); }
+		// Sets the UIScale value explicitly chosen by the user, used as a ceiling for auto-adjustment.
+		public static void SetUserRequestedUIScale(float scale)
+		{
+			userRequestedUIScale = scale;
+		}
+
+		public static void Tick()
+		{
+			var currentResolution = Game.Renderer.Resolution;
+			var currentNativeResolution = Game.Renderer.NativeResolution;
+
+			// Lazily initialise userRequestedUIScale from the persisted settings on the first tick.
+			if (userRequestedUIScale < 1f)
+				userRequestedUIScale = Game.Settings.Graphics.UIScale;
+
+			if (lastResolution != currentResolution)
+			{
+				lastResolution = currentResolution;
+
+				// Only clamp/restore UIScale when the physical window size changed (not when the user
+				// deliberately changed UIScale, which also affects the effective resolution).
+				if (lastNativeResolution != currentNativeResolution)
+				{
+					lastNativeResolution = currentNativeResolution;
+
+					// Clamp UIScale to the highest step that fits the new resolution, bounded above
+					// by the user's chosen value so that enlarging the window restores the preference.
+					var graphicSettings = Game.Settings.Graphics;
+					var viewportSizes = Game.ModData?.GetOrCreate<WorldViewportSizes>();
+					if (viewportSizes != null)
+					{
+						var maxScales = new float2(currentNativeResolution) / new float2(viewportSizes.MinEffectiveResolution);
+						var maxScale = Math.Min(maxScales.X, maxScales.Y);
+						var clampedScale = UIScaleSteps.LastOrDefault(s => s <= maxScale && s <= userRequestedUIScale);
+						if (clampedScale < 1f)
+							clampedScale = 1f;
+
+						if (Math.Abs(clampedScale - graphicSettings.UIScale) > 0.001f)
+						{
+							var oldScale = graphicSettings.UIScale;
+							graphicSettings.UIScale = clampedScale;
+							Game.Renderer.SetUIScale(clampedScale);
+							Viewport.LastMousePos = (Viewport.LastMousePos.ToFloat2() * oldScale / clampedScale).ToInt2();
+						}
+					}
+				}
+
+				Root.RecalculateBounds();
+			}
+
+			Root.TickOuter();
+		}
 
 		public static void PrepareRenderables() { Root.PrepareRenderablesOuter(); }
 
@@ -227,10 +286,59 @@ namespace OpenRA.Widgets
 		public bool IgnoreMouseOver;
 		public bool IgnoreChildMouseOver;
 
+		// Box model
+		public EdgeInsets Padding;
+		public EdgeInsets Margin;
+		public EdgeInsets Border;
+
+		// Size constraints
+		public int MinWidth;
+		public int MinHeight;
+		public int MaxWidth = int.MaxValue;
+		public int MaxHeight = int.MaxValue;
+
+		// Positioning mode: Absolute = legacy positioning, Flex = participates in parent flex layout
+		public WidgetLayout Positioning = WidgetLayout.Absolute;
+
+		// Flex container properties
+		public FlexDirection FlexDirection = FlexDirection.Column;
+		public JustifyContent JustifyContent = JustifyContent.Start;
+		public AlignItems AlignItems = AlignItems.Start;
+		public AlignContent AlignContent = AlignContent.Start;
+		public FlexWrap FlexWrap = FlexWrap.NoWrap;
+		public int Gap;
+
+		// Flex item properties
+		public float FlexGrow;
+		public float FlexShrink;
+		public AlignSelf AlignSelf = AlignSelf.Auto;
+
+		// Overflow
+		public OverflowMode Overflow = OverflowMode.Visible;
+
+		// Sizing
+		public SizingMode WidthSizing = SizingMode.Fixed;
+		public SizingMode HeightSizing = SizingMode.Fixed;
+
 		// Calculated internally
 		public WidgetBounds Bounds;
 		public Widget Parent = null;
 		public Func<bool> IsVisible;
+
+		// Scroll state for Overflow: Scroll
+		protected float scrollOffset;
+
+		// Layout dirty flag
+		bool layoutDirty = true;
+
+		public void MarkLayoutDirty()
+		{
+			if (layoutDirty)
+				return;
+
+			layoutDirty = true;
+			Parent?.MarkLayoutDirty();
+		}
 
 		protected Widget() { IsVisible = () => Visible; }
 
@@ -243,6 +351,27 @@ namespace OpenRA.Widgets
 			Height = widget.Height;
 			Logic = widget.Logic;
 			Visible = widget.Visible;
+
+			Padding = widget.Padding;
+			Margin = widget.Margin;
+			Border = widget.Border;
+			MinWidth = widget.MinWidth;
+			MinHeight = widget.MinHeight;
+			MaxWidth = widget.MaxWidth;
+			MaxHeight = widget.MaxHeight;
+			Positioning = widget.Positioning;
+			FlexDirection = widget.FlexDirection;
+			JustifyContent = widget.JustifyContent;
+			AlignItems = widget.AlignItems;
+			AlignContent = widget.AlignContent;
+			FlexWrap = widget.FlexWrap;
+			Gap = widget.Gap;
+			FlexGrow = widget.FlexGrow;
+			FlexShrink = widget.FlexShrink;
+			AlignSelf = widget.AlignSelf;
+			Overflow = widget.Overflow;
+			WidthSizing = widget.WidthSizing;
+			HeightSizing = widget.HeightSizing;
 
 			Bounds = widget.Bounds;
 			Parent = widget.Parent;
@@ -266,12 +395,25 @@ namespace OpenRA.Widgets
 		{
 			get
 			{
+				// Fixed positioning: relative to the window, ignoring parent
+				if (Positioning == WidgetLayout.Fixed)
+					return new int2(Bounds.X, Bounds.Y);
+
 				var offset = (Parent == null) ? int2.Zero : Parent.ChildOrigin;
+
+				// Absolute children are positioned relative to the border box (inside border,
+				// before padding), matching CSS behavior. Padding only affects flex children
+				// whose positions are already computed in the content area by FlexLayout.
+				if (Positioning == WidgetLayout.Absolute && Parent != null)
+					offset -= new int2(Parent.Padding.Left, Parent.Padding.Top);
+
 				return new int2(Bounds.X, Bounds.Y) + offset;
 			}
 		}
 
-		public virtual int2 ChildOrigin => RenderOrigin;
+		public virtual int2 ChildOrigin => RenderOrigin + new int2(
+			Border.Left + Padding.Left,
+			Border.Top + Padding.Top + (Overflow == OverflowMode.Scroll ? (int)scrollOffset : 0));
 
 		public virtual Rectangle RenderBounds
 		{
@@ -279,6 +421,19 @@ namespace OpenRA.Widgets
 			{
 				var ro = RenderOrigin;
 				return new Rectangle(ro.X, ro.Y, Bounds.Width, Bounds.Height);
+			}
+		}
+
+		public Rectangle ContentBounds
+		{
+			get
+			{
+				var ro = RenderOrigin;
+				return new Rectangle(
+					ro.X + Border.Left + Padding.Left,
+					ro.Y + Border.Top + Padding.Top,
+					Bounds.Width - Border.Horizontal - Padding.Horizontal,
+					Bounds.Height - Border.Vertical - Padding.Vertical);
 			}
 		}
 
@@ -310,6 +465,37 @@ namespace OpenRA.Widgets
 			var x = X?.Evaluate(readOnlySubstitutions) ?? 0;
 			var y = Y?.Evaluate(readOnlySubstitutions) ?? 0;
 			Bounds = new WidgetBounds(x, y, width, height);
+		}
+
+		public virtual void RecalculateBounds()
+		{
+			var parentBounds = (Parent == null)
+				? new WidgetBounds(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
+				: Parent.Bounds;
+
+			var substitutions = new Dictionary<string, int>
+			{
+				{ "WINDOW_WIDTH", Game.Renderer.Resolution.Width },
+				{ "WINDOW_HEIGHT", Game.Renderer.Resolution.Height },
+				{ "PARENT_WIDTH", parentBounds.Width },
+				{ "PARENT_HEIGHT", parentBounds.Height }
+			};
+
+			var readOnlySubstitutions = new ReadOnlyDictionary<string, int>(substitutions);
+			var width = Width?.Evaluate(readOnlySubstitutions) ?? 0;
+			var height = Height?.Evaluate(readOnlySubstitutions) ?? 0;
+
+			substitutions.Add("WIDTH", width);
+			substitutions.Add("HEIGHT", height);
+
+			var x = X?.Evaluate(readOnlySubstitutions) ?? 0;
+			var y = Y?.Evaluate(readOnlySubstitutions) ?? 0;
+			Bounds = new WidgetBounds(x, y, width, height);
+
+			foreach (var child in Children)
+				child.RecalculateBounds();
+
+			MarkLayoutDirty();
 		}
 
 		public void PostInit(WidgetArgs args)
@@ -421,10 +607,33 @@ namespace OpenRA.Widgets
 		public virtual void MouseEntered() { }
 		public virtual void MouseExited() { }
 
+		protected int CalculateContentHeight()
+		{
+			var maxBottom = 0;
+			foreach (var child in Children)
+				if (child.IsVisible())
+					maxBottom = Math.Max(maxBottom, child.Bounds.Bottom);
+			return maxBottom;
+		}
+
 		/// <summary>Possibly handles mouse input (click, drag, scroll, etc).</summary>
 		/// <returns><c>true</c>, if mouse input was handled, <c>false</c> if the input should bubble to the parent widget.</returns>
 		/// <param name="mi">Mouse input data.</param>
-		public virtual bool HandleMouseInput(MouseInput mi) { return false; }
+		public virtual bool HandleMouseInput(MouseInput mi)
+		{
+			if (Overflow == OverflowMode.Scroll && mi.Event == MouseInputEvent.Scroll)
+			{
+				var contentHeight = CalculateContentHeight();
+				if (contentHeight > Bounds.Height)
+				{
+					scrollOffset += mi.Delta.Y * Game.Settings.Game.UIScrollSpeed;
+					scrollOffset = Math.Min(0, Math.Max(Bounds.Height - contentHeight, scrollOffset));
+					return true;
+				}
+			}
+
+			return false;
+		}
 
 		public bool HandleMouseInputOuter(MouseInput mi)
 		{
@@ -499,15 +708,79 @@ namespace OpenRA.Widgets
 			}
 		}
 
+		public virtual void PerformLayoutIfNeeded()
+		{
+			if (!layoutDirty)
+				return;
+
+			// SizingMode.Fill: take parent's available space (minus parent padding and border)
+			if (Parent != null)
+			{
+				if (WidthSizing == SizingMode.Fill)
+					Bounds.Width = Parent.Bounds.Width - Parent.Padding.Horizontal - Parent.Border.Horizontal;
+				if (HeightSizing == SizingMode.Fill)
+					Bounds.Height = Parent.Bounds.Height - Parent.Padding.Vertical - Parent.Border.Vertical;
+			}
+
+			// SizingMode.FitContent: size to children
+			if (WidthSizing == SizingMode.FitContent || HeightSizing == SizingMode.FitContent)
+			{
+				var (w, h) = FlexLayout.CalculateIntrinsicSize(this);
+				if (WidthSizing == SizingMode.FitContent)
+					Bounds.Width = w;
+				if (HeightSizing == SizingMode.FitContent)
+					Bounds.Height = h;
+			}
+
+			// Apply size constraints
+			ApplySizeConstraints();
+
+			var hasFlexChildren = false;
+			foreach (var child in Children)
+			{
+				if (child.Positioning == WidgetLayout.Flex)
+				{
+					hasFlexChildren = true;
+					break;
+				}
+			}
+
+			if (hasFlexChildren)
+				FlexLayout.PerformLayout(this);
+
+			layoutDirty = false;
+
+			foreach (var child in Children)
+				child.PerformLayoutIfNeeded();
+		}
+
+		void ApplySizeConstraints()
+		{
+			Bounds.Width = Math.Clamp(Bounds.Width, MinWidth, MaxWidth);
+			Bounds.Height = Math.Clamp(Bounds.Height, MinHeight, MaxHeight);
+		}
+
 		public virtual void Draw() { }
 
 		public virtual void DrawOuter()
 		{
 			if (IsVisible())
 			{
+				PerformLayoutIfNeeded();
+
+				var clip = Overflow == OverflowMode.Hidden || Overflow == OverflowMode.Scroll;
+				if (clip)
+				{
+					var rb = RenderBounds;
+					Game.Renderer.EnableScissor(rb);
+				}
+
 				Draw();
 				foreach (var child in Children)
 					child.DrawOuter();
+
+				if (clip)
+					Game.Renderer.DisableScissor();
 			}
 		}
 
@@ -531,6 +804,7 @@ namespace OpenRA.Widgets
 		{
 			child.Parent = this;
 			Children.Add(child);
+			MarkLayoutDirty();
 		}
 
 		public virtual void RemoveChild(Widget child)
@@ -539,6 +813,7 @@ namespace OpenRA.Widgets
 			{
 				Children.Remove(child);
 				child.Removed();
+				MarkLayoutDirty();
 			}
 		}
 
@@ -548,6 +823,7 @@ namespace OpenRA.Widgets
 			{
 				Children.Remove(child);
 				child.Hidden();
+				MarkLayoutDirty();
 			}
 		}
 
@@ -557,6 +833,7 @@ namespace OpenRA.Widgets
 				child?.Removed();
 
 			Children.Clear();
+			MarkLayoutDirty();
 		}
 
 		public virtual void Hidden()

@@ -111,16 +111,19 @@ Container@OBSERVER_WIDGETS:
 					Width: 160
 					Height: 35
 					Visible: false
+					FlexDirection: Row
+					AlignItems: Center
+					Gap: 9
+					Padding: 0, 15, 0, 15
 					Children:
 						Button@BUTTON_PAUSE:
-							X: 15
-							Y: 10
 							Width: 26
 							Height: 26
 							Key: Pause
 							TooltipText: button-replay-pause-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							IgnoreChildMouseOver: true
+							Positioning: Flex
 							Children:
 								Image@IMAGE_PAUSE:
 									X: 5
@@ -128,14 +131,13 @@ Container@OBSERVER_WIDGETS:
 									ImageCollection: music
 									ImageName: pause
 						Button@BUTTON_PLAY:
-							X: 15
-							Y: 10
 							Width: 26
 							Height: 26
 							Key: Pause
 							TooltipText: button-replay-play-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							IgnoreChildMouseOver: true
+							Positioning: Flex
 							Children:
 								Image@IMAGE_PLAY:
 									X: 5
@@ -143,8 +145,6 @@ Container@OBSERVER_WIDGETS:
 									ImageCollection: music
 									ImageName: play
 						Button@BUTTON_SLOW:
-							X: 55
-							Y: 13
 							Width: 36
 							Height: 20
 							Key: ReplaySpeedSlow
@@ -152,9 +152,8 @@ Container@OBSERVER_WIDGETS:
 							TooltipContainer: TOOLTIP_CONTAINER
 							Text: button-replay-slow.label
 							Font: TinyBold
+							Positioning: Flex
 						Button@BUTTON_REGULAR:
-							X: 55 + 45
-							Y: 13
 							Width: 38
 							Height: 20
 							Key: ReplaySpeedRegular
@@ -162,9 +161,8 @@ Container@OBSERVER_WIDGETS:
 							TooltipContainer: TOOLTIP_CONTAINER
 							Text: button-replay-regular.label
 							Font: TinyBold
+							Positioning: Flex
 						Button@BUTTON_FAST:
-							X: 55 + 45 * 2
-							Y: 13
 							Width: 38
 							Height: 20
 							Key: ReplaySpeedFast
@@ -172,9 +170,8 @@ Container@OBSERVER_WIDGETS:
 							TooltipContainer: TOOLTIP_CONTAINER
 							Text: button-replay-fast.label
 							Font: TinyBold
+							Positioning: Flex
 						Button@BUTTON_MAXIMUM:
-							X: 55 + 45 * 3
-							Y: 13
 							Width: 38
 							Height: 20
 							Key: ReplaySpeedMax
@@ -182,6 +179,7 @@ Container@OBSERVER_WIDGETS:
 							TooltipContainer: TOOLTIP_CONTAINER
 							Text: button-replay-maximum.label
 							Font: TinyBold
+							Positioning: Flex
 		Container@INGAME_OBSERVERSTATS_BG:
 			Logic: ObserverStatsLogic
 				StatisticsNoneKey: StatisticsNone

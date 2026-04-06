@@ -54,6 +54,7 @@ Container@PLAYER_WIDGETS:
 			Y: WINDOW_HEIGHT - HEIGHT - 14
 			Width: 275
 			Height: 26
+			FlexDirection: Row
 			Children:
 				LogicKeyListener@MODIFIER_OVERRIDES:
 				Button@ATTACK_MOVE:
@@ -68,6 +69,7 @@ Container@PLAYER_WIDGETS:
 					TooltipDesc: button-command-bar-attack-move.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Positioning: Flex
 					Children:
 						Image@ICON:
 							X: 5
@@ -76,7 +78,6 @@ Container@PLAYER_WIDGETS:
 							ImageName: attack-move
 				Button@FORCE_MOVE:
 					Logic: AddFactionSuffixLogic
-					X: 34
 					Width: 34
 					Height: 26
 					VisualHeight: 0
@@ -86,6 +87,7 @@ Container@PLAYER_WIDGETS:
 					TooltipDesc: button-command-bar-force-move.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Positioning: Flex
 					Children:
 						Image@ICON:
 							X: 5
@@ -94,7 +96,6 @@ Container@PLAYER_WIDGETS:
 							ImageName: force-move
 				Button@FORCE_ATTACK:
 					Logic: AddFactionSuffixLogic
-					X: 68
 					Width: 34
 					Height: 26
 					VisualHeight: 0
@@ -104,6 +105,7 @@ Container@PLAYER_WIDGETS:
 					TooltipDesc: button-command-bar-force-attack.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Positioning: Flex
 					Children:
 						Image@ICON:
 							X: 5
@@ -112,7 +114,6 @@ Container@PLAYER_WIDGETS:
 							ImageName: force-attack
 				Button@GUARD:
 					Logic: AddFactionSuffixLogic
-					X: 102
 					Width: 34
 					Height: 26
 					VisualHeight: 0
@@ -122,6 +123,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: button-command-bar-guard.tooltip
 					TooltipDesc: button-command-bar-guard.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
+					Positioning: Flex
 					Children:
 						Image@ICON:
 							X: 5
@@ -130,7 +132,6 @@ Container@PLAYER_WIDGETS:
 							ImageName: guard
 				Button@DEPLOY:
 					Logic: AddFactionSuffixLogic
-					X: 136
 					Width: 34
 					Height: 26
 					VisualHeight: 0
@@ -141,6 +142,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: button-command-bar-deploy.tooltip
 					TooltipDesc: button-command-bar-deploy.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
+					Positioning: Flex
 					Children:
 						Image@ICON:
 							X: 5
@@ -149,7 +151,6 @@ Container@PLAYER_WIDGETS:
 							ImageName: deploy
 				Button@SCATTER:
 					Logic: AddFactionSuffixLogic
-					X: 170
 					Width: 34
 					Height: 26
 					VisualHeight: 0
@@ -160,6 +161,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: button-command-bar-scatter.tooltip
 					TooltipDesc: button-command-bar-scatter.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
+					Positioning: Flex
 					Children:
 						Image@ICON:
 							X: 5
@@ -168,7 +170,6 @@ Container@PLAYER_WIDGETS:
 							ImageName: scatter
 				Button@STOP:
 					Logic: AddFactionSuffixLogic
-					X: 204
 					Width: 34
 					Height: 26
 					VisualHeight: 0
@@ -179,6 +180,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: button-command-bar-stop.tooltip
 					TooltipDesc: button-command-bar-stop.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
+					Positioning: Flex
 					Children:
 						Image@ICON:
 							X: 5
@@ -187,7 +189,6 @@ Container@PLAYER_WIDGETS:
 							ImageName: stop
 				Button@QUEUE_ORDERS:
 					Logic: AddFactionSuffixLogic
-					X: 238
 					Width: 34
 					Height: 26
 					VisualHeight: 0
@@ -197,6 +198,7 @@ Container@PLAYER_WIDGETS:
 					TooltipDesc: button-command-bar-queue-orders.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP
+					Positioning: Flex
 					Children:
 						Image@ICON:
 							X: 5
@@ -209,6 +211,7 @@ Container@PLAYER_WIDGETS:
 			Y: WINDOW_HEIGHT - HEIGHT - 14
 			Width: 138
 			Height: 26
+			FlexDirection: Row
 			Children:
 				Button@STANCE_ATTACKANYTHING:
 					Logic: AddFactionSuffixLogic
@@ -222,6 +225,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: button-stance-bar-attackanything.tooltip
 					TooltipDesc: button-stance-bar-attackanything.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
+					Positioning: Flex
 					Children:
 						Image@ICON:
 							X: 9
@@ -230,7 +234,6 @@ Container@PLAYER_WIDGETS:
 							ImageName: attack-anything
 				Button@STANCE_DEFEND:
 					Logic: AddFactionSuffixLogic
-					X: 34
 					Width: 34
 					Height: 26
 					VisualHeight: 0
@@ -241,6 +244,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: button-stance-bar-defend.tooltip
 					TooltipDesc: button-stance-bar-defend.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
+					Positioning: Flex
 					Children:
 						Image@ICON:
 							X: 9
@@ -249,7 +253,6 @@ Container@PLAYER_WIDGETS:
 							ImageName: defend
 				Button@STANCE_RETURNFIRE:
 					Logic: AddFactionSuffixLogic
-					X: 68
 					Width: 34
 					Height: 26
 					VisualHeight: 0
@@ -260,6 +263,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: button-stance-bar-returnfire.tooltip
 					TooltipDesc: button-stance-bar-returnfire.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
+					Positioning: Flex
 					Children:
 						Image@ICON:
 							X: 9
@@ -268,7 +272,6 @@ Container@PLAYER_WIDGETS:
 							ImageName: return-fire
 				Button@STANCE_HOLDFIRE:
 					Logic: AddFactionSuffixLogic
-					X: 102
 					Width: 34
 					Height: 26
 					VisualHeight: 0
@@ -279,6 +282,7 @@ Container@PLAYER_WIDGETS:
 					TooltipText: button-stance-bar-holdfire.tooltip
 					TooltipDesc: button-stance-bar-holdfire.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
+					Positioning: Flex
 					Children:
 						Image@ICON:
 							X: 9

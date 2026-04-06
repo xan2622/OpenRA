@@ -1,0 +1,147 @@
+# Box Model Layout Examples
+# These demonstrate the new flex layout, padding, margin and sizing features.
+# They are not used by the game but serve as reference for widget authors.
+#
+# To test: register this file in a mod's ChromeLayout section and
+# open the widget by Id from a ChromeLogic class or the debug console.
+
+# Example 1: Two-button dialog using flex layout
+# Instead of pixel-perfect positioning, buttons are laid out in a row
+# with automatic spacing.
+Background@FLEX_TWOBUTTON_PROMPT:
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 370
+	Height: 110
+	Padding: 20
+	FlexDirection: Column
+	JustifyContent: SpaceBetween
+	Children:
+		# Title and text use absolute positioning (default)
+		Label@PROMPT_TITLE:
+			Width: PARENT_WIDTH
+			Height: 25
+			Font: Bold
+			Align: Center
+			Positioning: Flex
+		Label@PROMPT_TEXT:
+			Width: PARENT_WIDTH - 30
+			Height: 20
+			Align: Center
+			Positioning: Flex
+		# Button row: a flex container inside the column
+		Container@BUTTON_ROW:
+			Width: PARENT_WIDTH - 40
+			Height: 25
+			Positioning: Flex
+			FlexDirection: Row
+			JustifyContent: SpaceBetween
+			Children:
+				Button@CONFIRM_BUTTON:
+					Width: 160
+					Height: 25
+					Positioning: Flex
+					Text: button-prompt-confirm
+					Font: Bold
+					Key: return
+					Visible: false
+				Button@CANCEL_BUTTON:
+					Width: 160
+					Height: 25
+					Positioning: Flex
+					Text: button-cancel
+					Font: Bold
+					Key: escape
+					Visible: false
+
+# Example 2: Sidebar + Main content layout
+# Shows FlexGrow for a main area that fills remaining space.
+Container@FLEX_SIDEBAR_LAYOUT:
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 600
+	Height: 400
+	Padding: 10
+	FlexDirection: Row
+	Gap: 10
+	AlignItems: Stretch
+	Children:
+		Container@SIDEBAR:
+			Width: 150
+			Height: 380
+			Positioning: Flex
+		Container@MAIN:
+			Width: 0
+			Height: 380
+			Positioning: Flex
+			FlexGrow: 1
+
+# Example 3: Grid of items using FlexWrap
+# Items wrap to the next line when they exceed the container width.
+Container@FLEX_GRID:
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 340
+	Height: 300
+	Padding: 10
+	FlexDirection: Row
+	FlexWrap: Wrap
+	Gap: 10
+	Children:
+		Container@ITEM_1:
+			Width: 100
+			Height: 80
+			Positioning: Flex
+		Container@ITEM_2:
+			Width: 100
+			Height: 80
+			Positioning: Flex
+		Container@ITEM_3:
+			Width: 100
+			Height: 80
+			Positioning: Flex
+		Container@ITEM_4:
+			Width: 100
+			Height: 80
+			Positioning: Flex
+		Container@ITEM_5:
+			Width: 100
+			Height: 80
+			Positioning: Flex
+		Container@ITEM_6:
+			Width: 100
+			Height: 80
+			Positioning: Flex
+
+# Example 4: Centered content with margin
+# Demonstrates Margin on flex children and JustifyContent: Center.
+Container@FLEX_CENTERED:
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
+	Width: 400
+	Height: 200
+	FlexDirection: Column
+	JustifyContent: Center
+	AlignItems: Center
+	Children:
+		Label@TITLE:
+			Width: 300
+			Height: 30
+			Positioning: Flex
+			Margin: 0, 0, 10, 0
+			Font: Bold
+			Align: Center
+		Button@ACTION:
+			Width: 200
+			Height: 25
+			Positioning: Flex
+			Font: Bold
+
+# Example 5: Fixed positioning
+# A widget that stays in the top-right corner regardless of its parent.
+Container@FIXED_NOTIFICATION:
+	X: WINDOW_WIDTH - 220
+	Y: 10
+	Width: 200
+	Height: 50
+	Positioning: Fixed

@@ -38,6 +38,10 @@ Container@MAINMENU:
 				Background@MAIN_MENU:
 					Width: PARENT_WIDTH
 					Height: PARENT_HEIGHT
+					FlexDirection: Column
+					AlignItems: Center
+					Gap: 10
+					Padding: 60, 0, 0, 0
 					Children:
 						Label@MAINMENU_LABEL_TITLE:
 							X: 0
@@ -48,50 +52,48 @@ Container@MAINMENU:
 							Align: Center
 							Font: Bold
 						Button@SINGLEPLAYER_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 60
 							Width: 140
 							Height: 30
 							Text: label-singleplayer-title
 							Font: Bold
+							Positioning: Flex
 						Button@MULTIPLAYER_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 100
 							Width: 140
 							Height: 30
 							Text: label-multiplayer-title
 							Font: Bold
+							Positioning: Flex
 						Button@SETTINGS_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 140
 							Width: 140
 							Height: 30
 							Text: button-settings-title
 							Font: Bold
+							Positioning: Flex
 						Button@EXTRAS_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 180
 							Width: 140
 							Height: 30
 							Text: button-extras-title
 							Font: Bold
+							Positioning: Flex
 						Button@CONTENT_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 220
 							Width: 140
 							Height: 30
 							Text: button-main-menu-content
 							Font: Bold
+							Positioning: Flex
 						Button@QUIT_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 260
 							Width: 140
 							Height: 30
 							Text: button-quit
 							Font: Bold
+							Positioning: Flex
 				Background@SINGLEPLAYER_MENU:
 					Width: PARENT_WIDTH
 					Height: PARENT_HEIGHT
+					FlexDirection: Column
+					AlignItems: Center
+					Gap: 10
+					Padding: 60, 0, 0, 0
 					Children:
 						Label@SINGLEPLAYER_MENU_TITLE:
 							X: 0
@@ -102,26 +104,23 @@ Container@MAINMENU:
 							Align: Center
 							Font: Bold
 						Button@SKIRMISH_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 60
 							Width: 140
 							Height: 30
 							Text: button-singleplayer-menu-skirmish
 							Font: Bold
+							Positioning: Flex
 						Button@MISSIONS_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 100
 							Width: 140
 							Height: 30
 							Text: label-missions-title
 							Font: Bold
+							Positioning: Flex
 						Button@LOAD_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 140
 							Width: 140
 							Height: 30
 							Text: button-singleplayer-menu-load
 							Font: Bold
+							Positioning: Flex
 						Button@BACK_BUTTON:
 							X: PARENT_WIDTH / 2 - WIDTH / 2
 							Key: escape
@@ -133,6 +132,10 @@ Container@MAINMENU:
 				Background@EXTRAS_MENU:
 					Width: PARENT_WIDTH
 					Height: PARENT_HEIGHT
+					FlexDirection: Column
+					AlignItems: Center
+					Gap: 10
+					Padding: 60, 0, 0, 0
 					Children:
 						Label@EXTRAS_MENU_TITLE:
 							X: 0
@@ -143,51 +146,49 @@ Container@MAINMENU:
 							Align: Center
 							Font: Bold
 						Button@REPLAYS_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 60
 							Width: 140
 							Height: 30
 							Text: button-extras-menu-replays
 							Font: Bold
+							Positioning: Flex
 						Button@MUSIC_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 100
 							Width: 140
 							Height: 30
 							Text: label-music-title
 							Font: Bold
+							Positioning: Flex
 						Button@MAP_EDITOR_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 140
 							Width: 140
 							Height: 30
 							Text: label-map-editor-title
 							Font: Bold
+							Positioning: Flex
 						Button@ASSETBROWSER_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 180
 							Width: 140
 							Height: 30
 							Text: button-extras-menu-assetbrowser
 							Font: Bold
+							Positioning: Flex
 						Button@CREDITS_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 220
 							Width: 140
 							Height: 30
 							Text: label-credits-title
 							Font: Bold
+							Positioning: Flex
 						Button@BACK_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
 							Key: escape
-							Y: 260
 							Width: 140
 							Height: 30
 							Text: button-back
 							Font: Bold
+							Positioning: Flex
 				Background@MAP_EDITOR_MENU:
 					Width: PARENT_WIDTH
 					Height: PARENT_HEIGHT
+					FlexDirection: Column
+					AlignItems: Center
+					Gap: 10
+					Padding: 60, 0, 0, 0
 					Children:
 						Label@MAP_EDITOR_MENU_TITLE:
 							X: 0
@@ -198,19 +199,17 @@ Container@MAINMENU:
 							Align: Center
 							Font: Bold
 						Button@NEW_MAP_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 60
 							Width: 140
 							Height: 30
 							Text: button-map-editor-new-map
 							Font: Bold
+							Positioning: Flex
 						Button@LOAD_MAP_BUTTON:
-							X: PARENT_WIDTH / 2 - WIDTH / 2
-							Y: 100
 							Width: 140
 							Height: 30
 							Text: button-map-editor-load-map
 							Font: Bold
+							Positioning: Flex
 						Button@BACK_BUTTON:
 							X: PARENT_WIDTH / 2 - WIDTH / 2
 							Key: escape

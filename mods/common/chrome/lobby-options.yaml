@@ -21,25 +21,31 @@ Container@LOBBY_OPTIONS_BIN:
 						Container@CHECKBOX_ROW_TEMPLATE:
 							Width: PARENT_WIDTH
 							Height: 30
+							Padding: 5, 10, 5, 10
+							FlexDirection: Row
+							Gap: 0
 							Children:
 								Checkbox@A:
-									X: 10
 									Width: PARENT_WIDTH / 3 - 20
 									Height: 20
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
+									Positioning: Flex
+									FlexGrow: 1
 								Checkbox@B:
-									X: PARENT_WIDTH / 3 + 10
 									Width: PARENT_WIDTH / 3 - 20
 									Height: 20
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
+									Positioning: Flex
+									FlexGrow: 1
 								Checkbox@C:
-									X: (PARENT_WIDTH / 3) * 2 + 10
 									Width: PARENT_WIDTH / 3 - 20
 									Height: 20
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
+									Positioning: Flex
+									FlexGrow: 1
 						Container@DROPDOWN_ROW_TEMPLATE:
 							Height: 60
 							Width: PARENT_WIDTH

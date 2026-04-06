@@ -18,13 +18,15 @@ Background@CREDITS_PANEL:
 			Y: 50
 			Width: PARENT_WIDTH - 40
 			Height: 30
+			FlexDirection: Row
 			Children:
 				Button@MOD_TAB:
+					Positioning: Flex
 					Width: 140
 					Height: 31
 					Font: Bold
 				Button@ENGINE_TAB:
-					X: 140
+					Positioning: Flex
 					Width: 140
 					Height: 31
 					Text: label-openra

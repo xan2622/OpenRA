@@ -52,12 +52,16 @@ Container@LOBBY_MUSIC_BIN:
 				Container@BUTTONS:
 					X: (PARENT_WIDTH - WIDTH) / 2
 					Y: 100
-					Width: 131
+					Height: 26
+					FlexDirection: Row
+					AlignItems: Center
+					Gap: 9
 					Children:
 						Button@BUTTON_PREV:
 							Width: 26
 							Height: 26
 							IgnoreChildMouseOver: true
+							Positioning: Flex
 							Children:
 								Image@IMAGE_PREV:
 									X: 5
@@ -65,10 +69,10 @@ Container@LOBBY_MUSIC_BIN:
 									ImageCollection: music
 									ImageName: prev
 						Button@BUTTON_PLAY:
-							X: 35
 							Width: 26
 							Height: 26
 							IgnoreChildMouseOver: true
+							Positioning: Flex
 							Children:
 								Image@IMAGE_PLAY:
 									X: 5
@@ -77,10 +81,10 @@ Container@LOBBY_MUSIC_BIN:
 									ImageName: play
 						Button@BUTTON_PAUSE:
 							Visible: false
-							X: 35
 							Width: 26
 							Height: 26
 							IgnoreChildMouseOver: true
+							Positioning: Flex
 							Children:
 								Image@IMAGE_PAUSE:
 									X: 5
@@ -88,10 +92,10 @@ Container@LOBBY_MUSIC_BIN:
 									ImageCollection: music
 									ImageName: pause
 						Button@BUTTON_STOP:
-							X: 70
 							Width: 26
 							Height: 26
 							IgnoreChildMouseOver: true
+							Positioning: Flex
 							Children:
 								Image@IMAGE_STOP:
 									X: 5
@@ -99,30 +103,37 @@ Container@LOBBY_MUSIC_BIN:
 									ImageCollection: music
 									ImageName: stop
 						Button@BUTTON_NEXT:
-							X: 105
 							Width: 26
 							Height: 26
 							IgnoreChildMouseOver: true
+							Positioning: Flex
 							Children:
 								Image@IMAGE_NEXT:
 									X: 5
 									Y: 5
 									ImageCollection: music
 									ImageName: next
-				Checkbox@SHUFFLE:
-					X: 25
+				Container@SHUFFLE_REPEAT_ROW:
 					Y: 150
-					Width: 85
+					Width: PARENT_WIDTH
 					Height: 20
-					Font: Regular
-					Text: checkbox-music-controls-shuffle
-				Checkbox@REPEAT:
-					X: PARENT_WIDTH - 15 - WIDTH
-					Y: 150
-					Width: 70
-					Height: 20
-					Font: Regular
-					Text: checkbox-music-controls-loop
+					FlexDirection: Row
+					JustifyContent: SpaceBetween
+					AlignItems: Center
+					Children:
+						Checkbox@SHUFFLE:
+							X: 25
+							Width: 85
+							Height: 20
+							Font: Regular
+							Text: checkbox-music-controls-shuffle
+							Positioning: Flex
+						Checkbox@REPEAT:
+							Width: 70
+							Height: 20
+							Font: Regular
+							Text: checkbox-music-controls-loop
+							Positioning: Flex
 				Label@VOLUME_LABEL:
 					Y: 181
 					Width: 65

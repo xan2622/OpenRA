@@ -49,15 +49,45 @@ Background@MUSIC_PANEL:
 					Text: label-music-controls-length
 					Align: Center
 					Font: Bold
+		Container@SHUFFLE_REPEAT_ROW:
+			X: 20
+			Y: PARENT_HEIGHT - HEIGHT - 95
+			Width: PARENT_WIDTH - 40
+			Height: 25
+			FlexDirection: Row
+			JustifyContent: SpaceBetween
+			AlignItems: Center
+			Children:
+				Checkbox@SHUFFLE:
+					Width: 85
+					Height: 20
+					Text: checkbox-music-controls-shuffle
+					Positioning: Flex
+				Label@TIME_LABEL:
+					Width: 140
+					Height: 25
+					Align: Center
+					Font: Bold
+					Positioning: Flex
+				Checkbox@REPEAT:
+					Width: 70
+					Height: 20
+					Text: checkbox-music-controls-loop
+					Positioning: Flex
 		Container@BUTTONS:
 			X: 20
-			Y: PARENT_HEIGHT - HEIGHT - 85
+			Y: PARENT_HEIGHT - HEIGHT - 64
 			Width: PARENT_WIDTH - 40
+			Height: 26
+			FlexDirection: Row
+			AlignItems: Center
+			Gap: 9
 			Children:
 				Button@BUTTON_PREV:
 					Width: 26
 					Height: 26
 					IgnoreChildMouseOver: true
+					Positioning: Flex
 					Children:
 						Image@IMAGE_PREV:
 							X: 5
@@ -65,10 +95,10 @@ Background@MUSIC_PANEL:
 							ImageCollection: music
 							ImageName: prev
 				Button@BUTTON_PLAY:
-					X: 35
 					Width: 26
 					Height: 26
 					IgnoreChildMouseOver: true
+					Positioning: Flex
 					Children:
 						Image@IMAGE_PLAY:
 							X: 5
@@ -77,10 +107,10 @@ Background@MUSIC_PANEL:
 							ImageName: play
 				Button@BUTTON_PAUSE:
 					Visible: false
-					X: 35
 					Width: 26
 					Height: 26
 					IgnoreChildMouseOver: true
+					Positioning: Flex
 					Children:
 						Image@IMAGE_PAUSE:
 							X: 5
@@ -88,10 +118,10 @@ Background@MUSIC_PANEL:
 							ImageCollection: music
 							ImageName: pause
 				Button@BUTTON_STOP:
-					X: 70
 					Width: 26
 					Height: 26
 					IgnoreChildMouseOver: true
+					Positioning: Flex
 					Children:
 						Image@IMAGE_STOP:
 							X: 5
@@ -99,10 +129,10 @@ Background@MUSIC_PANEL:
 							ImageCollection: music
 							ImageName: stop
 				Button@BUTTON_NEXT:
-					X: 105
 					Width: 26
 					Height: 26
 					IgnoreChildMouseOver: true
+					Positioning: Flex
 					Children:
 						Image@IMAGE_NEXT:
 							X: 5
@@ -110,30 +140,12 @@ Background@MUSIC_PANEL:
 							ImageCollection: music
 							ImageName: next
 				ExponentialSlider@MUSIC_SLIDER:
-					X: PARENT_WIDTH - WIDTH
 					Y: 3
 					Width: PARENT_WIDTH - 145
 					Height: 20
 					Ticks: 7
-		Label@TIME_LABEL:
-			X: (PARENT_WIDTH - WIDTH) / 2
-			Y: PARENT_HEIGHT - HEIGHT - 95 - 3
-			Width: 140
-			Height: 25
-			Align: Center
-			Font: Bold
-		Checkbox@SHUFFLE:
-			X: 20
-			Y: PARENT_HEIGHT - HEIGHT - 95
-			Width: 85
-			Height: 20
-			Text: checkbox-music-controls-shuffle
-		Checkbox@REPEAT:
-			X: PARENT_WIDTH - 15 - WIDTH
-			Y: PARENT_HEIGHT - HEIGHT - 95
-			Width: 70
-			Height: 20
-			Text: checkbox-music-controls-loop
+					Positioning: Flex
+					FlexGrow: 1
 		Container@NO_MUSIC_LABEL:
 			X: 20
 			Y: (PARENT_HEIGHT - HEIGHT - 95) / 2

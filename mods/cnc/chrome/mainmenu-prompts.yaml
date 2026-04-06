@@ -58,35 +58,46 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 						Container@ROW:
 							Width: PARENT_WIDTH
 							Height: 50
+							Padding: 0, 10, 0, 10
+							FlexDirection: Row
+							Gap: 0
 							Children:
 								Container@PLAYER_CONTAINER:
-									X: 10
 									Width: PARENT_WIDTH / 2 - 20
+									FlexDirection: Column
+									Gap: 5
+									Positioning: Flex
+									FlexGrow: 1
 									Children:
 										Label@PLAYER:
 											Width: PARENT_WIDTH
 											Height: 20
 											Text: label-player-container
+											Positioning: Flex
 										TextField@PLAYERNAME:
-											Y: 25
 											Width: PARENT_WIDTH
 											Height: 25
 											MaxLength: 16
 											Text: Name
+											Positioning: Flex
 								Container@PLAYERCOLOR_CONTAINER:
-									X: PARENT_WIDTH / 2 + 10
 									Width: PARENT_WIDTH / 2 - 20
+									FlexDirection: Column
+									Gap: 5
+									Positioning: Flex
+									FlexGrow: 1
 									Children:
 										Label@COLOR:
 											Width: PARENT_WIDTH
 											Height: 20
 											Text: label-playercolor-container-color
+											Positioning: Flex
 										DropDownButton@PLAYERCOLOR:
-											Y: 25
 											Width: 75
 											Height: 25
 											IgnoreChildMouseOver: true
 											PanelAlign: Right
+											Positioning: Flex
 											Children:
 												ColorBlock@COLORBLOCK:
 													X: 5

@@ -109,14 +109,17 @@ Container@MISSIONBROWSER_PANEL:
 						Container@MISSION_TABS:
 							Width: PARENT_WIDTH
 							Y: PARENT_HEIGHT - 32
+							FlexDirection: Row
+							Gap: 6
 							Children:
 								Button@MISSIONINFO_TAB:
+									Positioning: Flex
 									Width: 178
 									Height: 32
 									Font: Bold
 									Text: button-missionbrowser-panel-mission-info
 								Button@OPTIONS_TAB:
-									X: 184
+									Positioning: Flex
 									Width: 178
 									Height: 32
 									Font: Bold

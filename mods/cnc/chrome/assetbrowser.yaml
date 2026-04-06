@@ -139,11 +139,16 @@ Container@ASSETBROWSER_PANEL:
 					X: 225
 					Y: PARENT_HEIGHT - 40
 					Width: PARENT_WIDTH - 225
+					Height: 26
+					FlexDirection: Row
+					AlignItems: Center
+					Gap: 9
 					Children:
 						Button@BUTTON_PREV:
 							Width: 26
 							Height: 26
 							Key: LEFT
+							Positioning: Flex
 							Children:
 								Image@IMAGE_PREV:
 									X: 5
@@ -153,10 +158,10 @@ Container@ASSETBROWSER_PANEL:
 									ImageCollection: music
 									ImageName: prev
 						Button@BUTTON_PLAY:
-							X: 35
 							Width: 26
 							Height: 26
 							Key: SPACE
+							Positioning: Flex
 							Children:
 								Image@IMAGE_PLAY:
 									X: 5
@@ -167,10 +172,10 @@ Container@ASSETBROWSER_PANEL:
 									ImageName: play
 						Button@BUTTON_PAUSE:
 							Visible: false
-							X: 35
 							Width: 26
 							Height: 26
 							Key: SPACE
+							Positioning: Flex
 							Children:
 								Image@IMAGE_PAUSE:
 									X: 5
@@ -180,10 +185,10 @@ Container@ASSETBROWSER_PANEL:
 									ImageCollection: music
 									ImageName: pause
 						Button@BUTTON_STOP:
-							X: 70
 							Width: 26
 							Height: 26
 							Key: RETURN
+							Positioning: Flex
 							Children:
 								Image@IMAGE_STOP:
 									X: 5
@@ -193,10 +198,10 @@ Container@ASSETBROWSER_PANEL:
 									ImageCollection: music
 									ImageName: stop
 						Button@BUTTON_NEXT:
-							X: 105
 							Width: 26
 							Height: 26
 							Key: RIGHT
+							Positioning: Flex
 							Children:
 								Image@IMAGE_NEXT:
 									X: 5
@@ -206,18 +211,19 @@ Container@ASSETBROWSER_PANEL:
 									ImageCollection: music
 									ImageName: next
 						Slider@FRAME_SLIDER:
-							X: 140
 							Y: 3
 							Width: PARENT_WIDTH - 140 - 85
 							Height: 20
 							MinimumValue: 0
+							Positioning: Flex
+							FlexGrow: 1
 						Label@FRAME_COUNT:
-							X: PARENT_WIDTH - WIDTH + 5
 							Y: 0
 							Width: 80
 							Height: 25
 							Font: TinyBold
 							Align: Left
+							Positioning: Flex
 		Button@CLOSE_BUTTON:
 			Key: escape
 			Y: PARENT_HEIGHT - 1

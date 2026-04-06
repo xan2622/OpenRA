@@ -49,6 +49,8 @@ Container@MENU_BACKGROUND:
 			Children:
 				Container@MAIN_MENU:
 					Width: PARENT_WIDTH
+					FlexDirection: Row
+					Gap: 10
 					Children:
 						Label@MAINMENU_LABEL_TITLE:
 							X: 0
@@ -60,44 +62,40 @@ Container@MENU_BACKGROUND:
 							Font: Bold
 							Contrast: True
 						Button@SINGLEPLAYER_BUTTON:
-							X: 0
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: label-singleplayer-title
+							Positioning: Flex
 						Button@MULTIPLAYER_BUTTON:
-							X: 150
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: label-multiplayer-title
+							Positioning: Flex
 						Button@SETTINGS_BUTTON:
-							X: 300
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: button-settings-title
+							Positioning: Flex
 						Button@EXTRAS_BUTTON:
-							X: 450
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: button-extras-title
+							Positioning: Flex
 						Button@CONTENT_BUTTON:
-							X: 600
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: button-main-menu-content
+							Positioning: Flex
 						Button@QUIT_BUTTON:
-							X: 750
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: button-quit
+							Positioning: Flex
 				Container@SINGLEPLAYER_MENU:
 					Width: PARENT_WIDTH
 					Visible: False
+					FlexDirection: Row
+					Gap: 10
 					Children:
 						Label@SINGLEPLAYER_MENU_TITLE:
 							X: 0
@@ -109,39 +107,36 @@ Container@MENU_BACKGROUND:
 							Font: Bold
 							Contrast: True
 						Button@SKIRMISH_BUTTON:
-							X: 0
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: button-singleplayer-menu-skirmish
+							Positioning: Flex
 						Button@MISSIONS_BUTTON:
-							X: 150
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: label-missions-title
+							Positioning: Flex
 						Button@LOAD_BUTTON:
-							X: 300
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: button-singleplayer-menu-load
+							Positioning: Flex
 						Button@ENCYCLOPEDIA_BUTTON:
-							X: 450
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: label-encyclopedia-title
+							Positioning: Flex
 						Button@BACK_BUTTON:
 							Key: escape
-							X: 600
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: button-back
+							Positioning: Flex
 				Container@EXTRAS_MENU:
 					Width: PARENT_WIDTH
 					Visible: False
+					FlexDirection: Row
+					Gap: 10
 					Children:
 						Label@EXTRAS_MENU_TITLE:
 							X: 0
@@ -153,46 +148,42 @@ Container@MENU_BACKGROUND:
 							Font: Bold
 							Contrast: True
 						Button@REPLAYS_BUTTON:
-							X: 0
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: button-extras-menu-replays
+							Positioning: Flex
 						Button@MUSIC_BUTTON:
-							X: 150
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: label-music-title
+							Positioning: Flex
 						Button@MAP_EDITOR_BUTTON:
-							X: 300
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: label-map-editor-title
 							Font: Bold
+							Positioning: Flex
 						Button@ASSETBROWSER_BUTTON:
-							X: 450
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: button-extras-menu-assetbrowser
+							Positioning: Flex
 						Button@CREDITS_BUTTON:
-							X: 600
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: label-credits-title
+							Positioning: Flex
 						Button@BACK_BUTTON:
 							Key: escape
-							X: 750
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: button-back
+							Positioning: Flex
 				Container@MAP_EDITOR_MENU:
 					Width: PARENT_WIDTH
 					Visible: False
+					FlexDirection: Row
+					Gap: 10
 					Children:
 						Label@MAP_EDITOR_MENU_TITLE:
 							X: 0
@@ -204,27 +195,24 @@ Container@MENU_BACKGROUND:
 							Font: Bold
 							Contrast: True
 						Button@NEW_MAP_BUTTON:
-							X: 0
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: button-map-editor-new-map
 							Font: Bold
+							Positioning: Flex
 						Button@LOAD_MAP_BUTTON:
-							X: 150
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: button-map-editor-load-map
 							Font: Bold
+							Positioning: Flex
 						Button@BACK_BUTTON:
-							X: 300
-							Y: 0
 							Width: 140
 							Height: 35
 							Text: button-back
 							Font: Bold
 							Key: escape
+							Positioning: Flex
 		Container@NEWS_BG:
 			Children:
 				DropDownButton@NEWS_BUTTON:

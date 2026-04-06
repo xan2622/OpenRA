@@ -124,6 +124,16 @@ namespace OpenRA.Mods.Common.Widgets
 			Scroll(0);
 		}
 
+		public override void RecalculateBounds()
+		{
+			base.RecalculateBounds();
+
+			// RecalculateBounds() resets children's Y to their YAML expression (usually 0),
+			// discarding positions previously set by the ILayout. Re-apply layout so children
+			// are correctly repositioned after a window resize.
+			Layout.AdjustChildren();
+		}
+
 		public override void AddChild(Widget child)
 		{
 			// Initial setup of margins/height
@@ -147,11 +157,36 @@ namespace OpenRA.Mods.Common.Widgets
 			Scroll(0);
 		}
 
+		public override void PerformLayoutIfNeeded()
+		{
+			var hasFlexChildren = false;
+			foreach (var child in Children)
+			{
+				if (child.Positioning == WidgetLayout.Flex)
+				{
+					hasFlexChildren = true;
+					break;
+				}
+			}
+
+			base.PerformLayoutIfNeeded();
+
+			// Recalculate ContentHeight from positions set by the flex layout in base.
+			if (hasFlexChildren)
+			{
+				ContentHeight = 0;
+				foreach (var child in Children)
+					if (child.IsVisible())
+						ContentHeight = Math.Max(ContentHeight, child.Bounds.Bottom);
+			}
+		}
+
 		public override void DrawOuter()
 		{
 			if (!IsVisible())
 				return;
 
+			PerformLayoutIfNeeded();
 			UpdateSmoothScrolling();
 
 			var rb = RenderBounds;

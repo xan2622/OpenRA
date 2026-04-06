@@ -10,72 +10,98 @@ Container@DEBUG_PANEL:
 			Align: Center
 			Width: PARENT_WIDTH
 			Height: 20
-		Checkbox@INSTANT_BUILD:
+		Container@CHEATS_COLUMNS:
 			X: 45
 			Y: 45
-			Width: 200
-			Height: 20
-			Font: Regular
-			Text: checkbox-debug-panel-instant-build
-		Checkbox@ENABLE_TECH:
+			Width: PARENT_WIDTH - 90
+			Height: 75
+			FlexDirection: Row
+			Gap: 45
+			Children:
+				Container@CHEATS_COL_LEFT:
+					Width: 200
+					FlexDirection: Column
+					Gap: 10
+					Positioning: Flex
+					Children:
+						Checkbox@INSTANT_BUILD:
+							Width: PARENT_WIDTH
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-instant-build
+							Positioning: Flex
+						Checkbox@ENABLE_TECH:
+							Width: PARENT_WIDTH
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-enable-tech
+							Positioning: Flex
+						Checkbox@BUILD_ANYWHERE:
+							Width: PARENT_WIDTH
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-build-anywhere
+							Positioning: Flex
+				Container@CHEATS_COL_RIGHT:
+					Width: 200
+					FlexDirection: Column
+					Gap: 10
+					Positioning: Flex
+					Children:
+						Checkbox@UNLIMITED_POWER:
+							Width: PARENT_WIDTH
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-unlimited-power
+							Positioning: Flex
+						Checkbox@INSTANT_CHARGE:
+							Width: PARENT_WIDTH
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-instant-charge
+							Positioning: Flex
+						Checkbox@DISABLE_VISIBILITY_CHECKS:
+							Width: PARENT_WIDTH
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-disable-visibility-checks
+							Positioning: Flex
+		Container@CASH_BUTTONS_ROW:
 			X: 45
-			Y: 75
-			Width: 200
-			Height: 20
-			Font: Regular
-			Text: checkbox-debug-panel-enable-tech
-		Checkbox@BUILD_ANYWHERE:
+			Y: 145
+			Width: PARENT_WIDTH - 90
+			Height: 35
+			FlexDirection: Row
+			Gap: 41
+			Children:
+				Button@GIVE_CASH:
+					Width: 140
+					Height: 35
+					Text: button-debug-panel-give-cash
+					Positioning: Flex
+				Button@GROW_RESOURCES:
+					Width: 140
+					Height: 35
+					Text: button-debug-panel-grow-resources
+					Positioning: Flex
+		Container@EXPLORATION_BUTTONS_ROW:
 			X: 45
-			Y: 105
-			Width: 200
-			Height: 20
-			Font: Regular
-			Text: checkbox-debug-panel-build-anywhere
-		Checkbox@UNLIMITED_POWER:
-			X: 290
-			Y: 45
-			Width: 200
-			Height: 20
-			Font: Regular
-			Text: checkbox-debug-panel-unlimited-power
-		Checkbox@INSTANT_CHARGE:
-			X: 290
-			Y: 75
-			Width: 200
-			Height: 20
-			Font: Regular
-			Text: checkbox-debug-panel-instant-charge
-		Checkbox@DISABLE_VISIBILITY_CHECKS:
-			X: 290
-			Y: 105
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: checkbox-debug-panel-disable-visibility-checks
-		Button@GIVE_CASH:
-			X: 90
-			Y: 145
-			Width: 140
-			Height: 35
-			Text: button-debug-panel-give-cash
-		Button@GROW_RESOURCES:
-			X: 271
-			Y: 145
-			Width: 140
-			Height: 35
-			Text: button-debug-panel-grow-resources
-		Button@GIVE_EXPLORATION:
-			X: 90
 			Y: 195
-			Width: 140
+			Width: PARENT_WIDTH - 90
 			Height: 35
-			Text: button-debug-panel-give-exploration
-		Button@RESET_EXPLORATION:
-			X: 271
-			Y: 195
-			Width: 140
-			Height: 35
-			Text: button-debug-panel-reset-exploration
+			FlexDirection: Row
+			Gap: 41
+			Children:
+				Button@GIVE_EXPLORATION:
+					Width: 140
+					Height: 35
+					Text: button-debug-panel-give-exploration
+					Positioning: Flex
+				Button@RESET_EXPLORATION:
+					Width: 140
+					Height: 35
+					Text: button-debug-panel-reset-exploration
+					Positioning: Flex
 		Label@VISUALIZATIONS_TITLE:
 			Y: 246
 			Font: Bold
@@ -83,52 +109,65 @@ Container@DEBUG_PANEL:
 			Align: Center
 			Width: PARENT_WIDTH
 			Height: 20
-		Checkbox@SHOW_UNIT_PATHS:
+		Container@VISUALIZATIONS_COLUMNS:
 			X: 45
 			Y: 275
-			Width: 200
-			Height: 20
-			Font: Regular
-			Text: checkbox-debug-panel-show-unit-paths
-		Checkbox@SHOW_CUSTOMTERRAIN_OVERLAY:
-			X: 45
-			Y: 305
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: checkbox-debug-panel-show-customterrain-overlay
-		Checkbox@SHOW_ACTOR_TAGS:
-			X: 45
-			Y: 335
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: checkbox-debug-panel-show-actor-tags
-		Checkbox@SHOW_COMBATOVERLAY:
-			X: 290
-			Y: 275
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: checkbox-debug-panel-show-combatoverlay
-		Checkbox@SHOW_GEOMETRY:
-			X: 290
-			Y: 305
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: checkbox-debug-panel-show-geometry
-		Checkbox@SHOW_TERRAIN_OVERLAY:
-			X: 290
-			Y: 335
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: checkbox-debug-panel-show-terrain-overlay
-		Checkbox@SHOW_SCREENMAP:
-			X: 290
-			Y: 365
-			Height: 20
-			Width: 200
-			Font: Regular
-			Text: checkbox-debug-panel-show-screenmap
+			Width: PARENT_WIDTH - 90
+			Height: 110
+			FlexDirection: Row
+			Gap: 45
+			Children:
+				Container@VIS_COL_LEFT:
+					Width: 200
+					FlexDirection: Column
+					Gap: 10
+					Positioning: Flex
+					Children:
+						Checkbox@SHOW_UNIT_PATHS:
+							Width: PARENT_WIDTH
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-show-unit-paths
+							Positioning: Flex
+						Checkbox@SHOW_CUSTOMTERRAIN_OVERLAY:
+							Width: PARENT_WIDTH
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-show-customterrain-overlay
+							Positioning: Flex
+						Checkbox@SHOW_ACTOR_TAGS:
+							Width: PARENT_WIDTH
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-show-actor-tags
+							Positioning: Flex
+				Container@VIS_COL_RIGHT:
+					Width: 200
+					FlexDirection: Column
+					Gap: 10
+					Positioning: Flex
+					Children:
+						Checkbox@SHOW_COMBATOVERLAY:
+							Width: PARENT_WIDTH
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-show-combatoverlay
+							Positioning: Flex
+						Checkbox@SHOW_GEOMETRY:
+							Width: PARENT_WIDTH
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-show-geometry
+							Positioning: Flex
+						Checkbox@SHOW_TERRAIN_OVERLAY:
+							Width: PARENT_WIDTH
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-show-terrain-overlay
+							Positioning: Flex
+						Checkbox@SHOW_SCREENMAP:
+							Width: PARENT_WIDTH
+							Height: 20
+							Font: Regular
+							Text: checkbox-debug-panel-show-screenmap
+							Positioning: Flex

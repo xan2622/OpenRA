@@ -27,9 +27,15 @@ Container@INGAME_MENU:
 		Container@MENU_BUTTONS:
 			X: (WINDOW_WIDTH - WIDTH) / 2
 			Y: WINDOW_HEIGHT - 33 - HEIGHT - 10
-			Width: 120
+			Width: 450
+			MinWidth: 120
 			Height: 35
+			MinHeight: 35
+			FlexDirection: Row
+			AlignItems: Center
+			Gap: 10
 			Children:
 				Button@BUTTON_TEMPLATE:
 					Width: 120
 					Height: 35
+					Positioning: Flex
