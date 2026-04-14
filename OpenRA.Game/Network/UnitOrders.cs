@@ -398,6 +398,22 @@ namespace OpenRA.Network
 					break;
 				}
 
+				case "SpectatorBeacon":
+				{
+					if (world == null || string.IsNullOrEmpty(order.TargetString))
+						break;
+
+					WPos position;
+					try { position = FieldLoader.GetValue<WPos>("position", order.TargetString); }
+					catch { break; }
+
+					var name = orderManager.LobbyInfo.ClientWithIndex(clientId)?.Name ?? "";
+					foreach (var t in world.WorldActor.TraitsImplementing<INotifySpectatorBeacon>())
+						t.SpectatorBeaconPlaced(world, position, name);
+
+					break;
+				}
+
 				default:
 				{
 					if (world == null)

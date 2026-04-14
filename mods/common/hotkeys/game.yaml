@@ -46,7 +46,7 @@ Repair: C
 PlaceBeacon: B
 	Description: hotkey-description-placebeacon
 	Types: OrderGenerator
-	Contexts: player
+	Contexts: player, spectator
 
 CycleStatusBars: COMMA
 	Description: hotkey-description-cyclestatusbars

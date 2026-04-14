@@ -25,6 +25,15 @@ namespace OpenRA.Mods.Common.Orders
 		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			world.CancelInputMode();
+
+			if (world.LocalPlayer == null)
+			{
+				// Spectators broadcast a beacon order so all spectators receive it.
+				var pos = world.Map.CenterOfCell(cell);
+				yield return new Order("SpectatorBeacon", null, false) { TargetString = $"{pos}" };
+				yield break;
+			}
+
 			yield return new Order("PlaceBeacon", world.LocalPlayer.PlayerActor, Target.FromCell(world, cell), false) { SuppressVisualFeedback = true };
 		}
 

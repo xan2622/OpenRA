@@ -178,6 +178,50 @@ namespace OpenRA.Graphics
 			}
 		}
 
+		public void DrawTextScaled(string text, float2 location, Color c, float scale)
+		{
+			// Offset from the baseline position to the top-left of the first glyph.
+			var p = new float2(0, size * scale);
+			var tint = new float3(c.R / 255f, c.G / 255f, c.B / 255f);
+			foreach (var s in text)
+			{
+				if (s == '\n')
+				{
+					p = new float2(0, p.Y + size * scale);
+					continue;
+				}
+
+				var g = glyphs[s];
+				if (g.Sprite != null)
+					Game.Renderer.RgbaSpriteRenderer.DrawSprite(g.Sprite,
+						location + new float2(
+							p.X + g.Offset.X * scale / deviceScale,
+							p.Y + g.Offset.Y * scale / deviceScale),
+						scale / deviceScale,
+						tint, 1f);
+
+				p += new float2(g.Advance * scale / deviceScale, 0);
+			}
+		}
+
+		public void DrawTextWithOutlineScaled(string text, float2 location, Color fg, Color outline, float scale)
+		{
+			// Draw the outline by rendering the text four times with a 1px offset in each
+			// cardinal direction, then draw the foreground color on top.
+			var offset = 1f / deviceScale;
+			DrawTextScaled(text, location + new float2(-offset, 0), outline, scale);
+			DrawTextScaled(text, location + new float2(offset, 0), outline, scale);
+			DrawTextScaled(text, location + new float2(0, -offset), outline, scale);
+			DrawTextScaled(text, location + new float2(0, offset), outline, scale);
+			DrawTextScaled(text, location, fg, scale);
+		}
+
+		public int2 MeasureScaled(string text, float scale)
+		{
+			var measured = Measure(text);
+			return new int2((int)Math.Ceiling(measured.X * scale), (int)Math.Ceiling(measured.Y * scale));
+		}
+
 		public void DrawTextWithContrast(string text, float2 location, Color fg, Color bg, int offset)
 		{
 			if (offset > 0)

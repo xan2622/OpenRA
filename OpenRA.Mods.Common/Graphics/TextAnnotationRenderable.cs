@@ -22,8 +22,11 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly Color bgDark;
 		readonly Color bgLight;
 		readonly string text;
+		readonly float scale;
+		readonly Color? outline;
 
-		public TextAnnotationRenderable(SpriteFont font, WPos pos, int zOffset, Color color, Color bgDark, Color bgLight, string text)
+		public TextAnnotationRenderable(SpriteFont font, WPos pos, int zOffset, Color color, Color bgDark, Color bgLight, string text,
+			float scale = 1f, Color? outline = null)
 		{
 			this.font = font;
 			Pos = pos;
@@ -32,33 +35,38 @@ namespace OpenRA.Mods.Common.Graphics
 			this.bgDark = bgDark;
 			this.bgLight = bgLight;
 			this.text = text;
+			this.scale = scale;
+			this.outline = outline;
 		}
 
-		public TextAnnotationRenderable(SpriteFont font, WPos pos, int zOffset, Color color, string text)
+		public TextAnnotationRenderable(SpriteFont font, WPos pos, int zOffset, Color color, string text, float scale = 1f, Color? outline = null)
 			: this(font, pos, zOffset, color,
 				ChromeMetrics.Get<Color>("TextContrastColorDark"),
 				ChromeMetrics.Get<Color>("TextContrastColorLight"),
-				text)
+				text, scale, outline)
 		{ }
 
 		public WPos Pos { get; }
 		public int ZOffset { get; }
 		public bool IsDecoration => true;
 
-		public IRenderable WithZOffset(int newOffset) { return new TextAnnotationRenderable(font, Pos, ZOffset, color, text); }
-		public IRenderable OffsetBy(in WVec vec) { return new TextAnnotationRenderable(font, Pos + vec, ZOffset, color, text); }
+		public IRenderable WithZOffset(int newOffset) { return new TextAnnotationRenderable(font, Pos, ZOffset, color, text, scale, outline); }
+		public IRenderable OffsetBy(in WVec vec) { return new TextAnnotationRenderable(font, Pos + vec, ZOffset, color, text, scale, outline); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			var screenPos = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos)) - 0.5f * font.Measure(text).ToFloat2();
-			font.DrawTextWithContrast(text, screenPos, color, bgDark, bgLight, 1);
+			var screenPos = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos)) - 0.5f * font.MeasureScaled(text, scale).ToFloat2();
+			if (outline.HasValue)
+				font.DrawTextWithOutlineScaled(text, screenPos, color, outline.Value, scale);
+			else
+				font.DrawTextWithContrast(text, screenPos, color, bgDark, bgLight, 1);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
-			var size = font.Measure(text).ToFloat2();
+			var size = font.MeasureScaled(text, scale).ToFloat2();
 			var screenPos = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos));
 			Game.Renderer.RgbaColorRenderer.DrawRect(screenPos - 0.5f * size, screenPos + 0.5f * size, 1, Color.Red);
 		}

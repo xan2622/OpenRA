@@ -206,6 +206,21 @@ Container@OBSERVER_WIDGETS:
 					Font: Bold
 					Children:
 						LogicKeyListener@STATS_DROPDOWN_KEYHANDLER:
+				Button@BEACON_BUTTON:
+					Logic: BeaconOrderButtonLogic
+					X: 325
+					Y: 0
+					Width: 30
+					Height: 25
+					Key: PlaceBeacon
+					TooltipText: button-top-buttons-beacon-tooltip
+					TooltipContainer: TOOLTIP_CONTAINER
+					VisualHeight: 0
+					Children:
+						Image@ICON:
+							X: 0
+							Y: 0
+							ImageCollection: order-icons-gdi
 				Container@GRAPH_BG:
 					Y: 30
 					X: 0

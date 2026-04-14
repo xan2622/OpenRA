@@ -138,6 +138,21 @@ Container@OBSERVER_WIDGETS:
 					Text: label-mute-indicator
 					Contrast: true
 		LogicKeyListener@OBSERVER_KEY_LISTENER:
+		Button@BEACON_BUTTON:
+			Logic: BeaconOrderButtonLogic
+			X: WINDOW_WIDTH - 295 - WIDTH
+			Y: 5
+			Width: 30
+			Height: 25
+			Key: PlaceBeacon
+			TooltipText: button-top-buttons-beacon-tooltip
+			TooltipContainer: TOOLTIP_CONTAINER
+			VisualHeight: 0
+			Children:
+				Image@ICON:
+					X: 7
+					Y: 5
+					ImageCollection: order-icons
 		MenuButton@OPTIONS_BUTTON:
 			Key: escape
 			X: WINDOW_WIDTH - 260 - WIDTH
@@ -161,6 +176,7 @@ Container@OBSERVER_WIDGETS:
 			Background: panel-gray
 			Children:
 				Radar:
+					WorldInteractionController: INTERACTION_CONTROLLER
 					X: 1
 					Y: 1
 					Width: PARENT_WIDTH - 2

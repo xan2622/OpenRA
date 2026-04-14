@@ -374,6 +374,7 @@ namespace OpenRA.Traits
 	public interface INotifyGameLoading { void GameLoading(World w); }
 	public interface INotifyGameLoaded { void GameLoaded(World w); }
 	public interface INotifyGameSaved { void GameSaved(World w, bool isAutoSave); }
+	public interface INotifySpectatorBeacon { void SpectatorBeaconPlaced(World w, WPos position, string spectatorName); }
 
 	public interface IGameSaveTraitData
 	{

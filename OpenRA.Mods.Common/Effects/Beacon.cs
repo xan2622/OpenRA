@@ -13,11 +13,13 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Effects;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
+using OpenRA.Primitives;
 using OpenRA.Scripting;
 
 namespace OpenRA.Mods.Common.Effects
 {
-	public class Beacon : IEffect, IScriptBindable, IEffectAboveShroud
+	public class Beacon : IEffect, IScriptBindable, IEffectAboveShroud, IEffectAnnotation
 	{
 		const int MaxArrowHeight = 512;
 
@@ -27,6 +29,8 @@ namespace OpenRA.Mods.Common.Effects
 		readonly string beaconPalette, posterPalette;
 		readonly Animation arrow, beacon, circles, clock, poster;
 		readonly int duration;
+		readonly string spectatorName;
+		readonly SpriteFont labelFont;
 
 		int delay;
 		int arrowHeight = MaxArrowHeight;
@@ -35,14 +39,19 @@ namespace OpenRA.Mods.Common.Effects
 
 		// Player-placed beacons are removed after a delay
 		public Beacon(Player owner, WPos position, int duration, string beaconPalette, bool isPlayerPalette,
-			string beaconCollection, string beaconSequence, string arrowSprite, string circleSprite, int delay = 0)
+			string beaconCollection, string beaconSequence, string arrowSprite, string circleSprite, int delay = 0,
+			string spectatorName = null)
 		{
 			this.owner = owner;
 			this.position = position;
+			this.spectatorName = spectatorName;
 			this.beaconPalette = beaconPalette;
 			this.isPlayerPalette = isPlayerPalette;
 			this.duration = duration;
 			this.delay = delay;
+
+			if (!string.IsNullOrEmpty(spectatorName))
+				labelFont = Game.Renderer.Fonts["Bold"];
 
 			if (!string.IsNullOrEmpty(beaconSequence))
 			{
@@ -112,7 +121,13 @@ namespace OpenRA.Mods.Common.Effects
 			if (delay > 0)
 				yield break;
 
-			if (!owner.IsAlliedWith(owner.World.RenderPlayer))
+			if (!string.IsNullOrEmpty(spectatorName))
+			{
+				// Spectator beacons are only visible in spectator views (all-players or unrestricted view).
+				if (owner.World.RenderPlayer != null && !owner.World.RenderPlayer.Spectating)
+					yield break;
+			}
+			else if (!owner.IsAlliedWith(owner.World.RenderPlayer))
 				yield break;
 
 			var palette = r.Palette(isPlayerPalette ? beaconPalette + owner.InternalName : beaconPalette);
@@ -138,6 +153,23 @@ namespace OpenRA.Mods.Common.Effects
 					foreach (var a in clock.Render(position, r.Palette(posterPalette)))
 						yield return a;
 			}
+		}
+
+		IEnumerable<IRenderable> IEffectAnnotation.RenderAnnotation(WorldRenderer wr)
+		{
+			if (delay > 0 || labelFont == null)
+				yield break;
+
+			if (owner.World.RenderPlayer != null && !owner.World.RenderPlayer.Spectating)
+				yield break;
+
+			// Scale the label continuously with the viewport zoom so it tracks the beacon
+			// icon size at every zoom level without discrete jumps.
+			var scale = wr.Viewport.Zoom / wr.Viewport.MinZoom;
+
+			// Offset the label above the beacon icon using world coordinates so the
+			// distance scales proportionally with the viewport zoom level.
+			yield return new TextAnnotationRenderable(labelFont, position + new WVec(0, 0, 2048), 0, Color.White, spectatorName, scale, Color.Black);
 		}
 	}
 }
