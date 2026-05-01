@@ -26,14 +26,14 @@ Container@OBSERVER_WIDGETS:
 			X: WINDOW_WIDTH - 250
 			Y: 10
 			Width: 238
-			Height: 287
+			Height: 272
 			ImageCollection: sidebar-observer
 			ImageName: background
 			ClickThrough: false
 			Children:
 				Background@GAME_TIMER_BLOCK:
 					Logic: GameTimerLogic
-					X: 26
+					X: 9
 					Y: 10
 					Width: 120
 					Height: 22
@@ -72,29 +72,29 @@ Container@OBSERVER_WIDGETS:
 				Container@RADAR:
 					Children:
 						ColorBlock:
-							X: 8
-							Y: 40
-							Width: 222
-							Height: 222
+							X: 24
+							Y: 41
+							Width: 205
+							Height: 205
 							Color: 000000
 						Radar@INGAME_RADAR:
 							WorldInteractionController: INTERACTION_CONTROLLER
-							X: 9
+							X: 24
 							Y: 41
-							Width: 220
-							Height: 220
+							Width: 205
+							Height: 205
 						VideoPlayer@PLAYER:
-							X: 9
+							X: 24
 							Y: 41
-							Width: 220
-							Height: 220
+							Width: 205
+							Height: 205
 							Skippable: false
 				DropDownButton@SHROUD_SELECTOR:
 					Logic: ObserverShroudSelectorLogic
 						CombinedViewKey: ObserverCombinedView
 						WorldViewKey: ObserverWorldView
 					X: 6
-					Y: 262
+					Y: 247
 					Width: 226
 					Height: 25
 					Font: Bold
@@ -122,7 +122,7 @@ Container@OBSERVER_WIDGETS:
 							Shadow: True
 		Image@SIDEBAR_BACKGROUND_BOTTOM:
 			X: WINDOW_WIDTH - 250
-			Y: 297
+			Y: 282
 			Width: 238
 			Height: 8
 			ImageCollection: sidebar-observer
@@ -130,7 +130,7 @@ Container@OBSERVER_WIDGETS:
 		Image@REPLAY_PLAYER:
 			Logic: ReplayControlBarLogic
 			X: WINDOW_WIDTH - 250
-			Y: 297
+			Y: 282
 			Width: 238
 			Height: 40
 			Visible: false

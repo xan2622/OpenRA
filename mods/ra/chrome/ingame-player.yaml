@@ -287,7 +287,7 @@ Container@PLAYER_WIDGETS:
 							ImageName: hold-fire
 		Container@MUTE_INDICATOR:
 			Logic: MuteIndicatorLogic
-			X: WINDOW_WIDTH - WIDTH - 260
+			X: WINDOW_WIDTH - WIDTH - 274
 			Y: 10
 			Width: 200
 			Height: 25
@@ -310,7 +310,7 @@ Container@PLAYER_WIDGETS:
 			X: WINDOW_WIDTH - 250
 			Y: 10
 			Width: 238
-			Height: 262
+			Height: 247
 			ImageCollection: sidebar
 			ImageName: background-top
 			ClickThrough: false
@@ -398,34 +398,63 @@ Container@PLAYER_WIDGETS:
 									ImageName: options
 				Image@RADAR:
 					Logic: AddFactionSuffixLogic, IngameRadarDisplayLogic
-					X: 8
-					Y: 40
+					X: 24
+					Y: 41
 					ImageCollection: sidebar
 					ImageName: radar
 					Children:
 						LogicTicker@RADAR_TICKER:
 						ColorBlock@RADAR_FADETOBLACK:
-							Width: 222
-							Height: 222
+							Width: 205
+							Height: 205
 						Radar@RADAR_MINIMAP:
 							WorldInteractionController: INTERACTION_CONTROLLER
-							X: 1
-							Y: 1
-							Width: 220
-							Height: 220
+							X: 0
+							Y: 0
+							Width: 205
+							Height: 205
 							SoundUp: RadarUp
 							SoundDown: RadarDown
 							Children:
 						VideoPlayer@PLAYER:
-							X: 1
-							Y: 1
-							Width: 220
-							Height: 220
+							X: 0
+							Y: 0
+							Width: 205
+							Height: 205
 							Skippable: false
+		Container@POWER_BAR_PANEL:
+			Logic: IngamePowerBarLogic
+			X: WINDOW_WIDTH - 243
+			Y: 48
+			Width: 10
+			Height: 202
+			Children:
+				Background@POWERBAR_BORDER:
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
+					Background: powerbar-border
+				ColorBlock@POWERBAR_BG:
+					X: 2
+					Y: 2
+					Width: PARENT_WIDTH - 4
+					Height: PARENT_HEIGHT - 4
+					Color: 00000080
+				ResourceBar@POWERBAR:
+					X: 2
+					Y: 2
+					Width: PARENT_WIDTH - 4
+					Height: PARENT_HEIGHT - 4
+					IndicatorImage:
+					IndicatorWidth: 6
+					IndicatorHeight: 2
+					IndicatorOffsetX: 0
+					IndicatorColor: FFFFFFFF
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
 		Container@SIDEBAR_PRODUCTION:
 			Logic: ClassicProductionLogic
 			X: WINDOW_WIDTH - 250
-			Y: 300
+			Y: 285
 			Width: 238
 			Height: 250
 			Children:
@@ -606,7 +635,7 @@ Container@PLAYER_WIDGETS:
 		Image@SIDEBAR_MONEYBIN:
 			Logic: AddFactionSuffixLogic
 			X: WINDOW_WIDTH - 250
-			Y: 272
+			Y: 257
 			Width: 238
 			Height: 28
 			ImageCollection: sidebar
@@ -654,6 +683,6 @@ Container@PLAYER_WIDGETS:
 							ImageName: power-normal
 		Container@HPF_ROOT:
 			Logic: LoadIngameHierarchicalPathFinderOverlayLogic
-			X: WINDOW_WIDTH - WIDTH - 260
+			X: WINDOW_WIDTH - WIDTH - 274
 			Y: 40
 			Width: 175

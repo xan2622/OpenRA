@@ -58,6 +58,13 @@ sidebar-gdi:
 		background-bottom: 0, 312, 235, 26
 		background-commandbar: 87, 461, 425, 51
 
+powerbar-gdi:
+	Inherits: ^Chrome
+	Regions:
+		powerbar-green: 401, 0, 10, 2
+		powerbar-red: 401, 3, 10, 2
+		powerbar-flash: 400, 6, 12, 4
+
 sidebar-button-gdi:
 	Inherits: ^Chrome
 	PanelRegion: 235, 119, 0, 0, 30, 31, 0, 0
@@ -260,6 +267,13 @@ sidebar-nod:
 		background-bottom: 512, 312, 235, 26
 		background-commandbar: 599, 461, 425, 51
 
+powerbar-nod:
+	Inherits: ^Chrome
+	Regions:
+		powerbar-green: 913, 0, 10, 2
+		powerbar-red: 913, 3, 10, 2
+		powerbar-flash: 400, 6, 12, 4
+
 sidebar-button-nod:
 	Inherits: ^Chrome
 	PanelRegion: 747, 119, 0, 0, 30, 31, 0, 0
@@ -461,6 +475,7 @@ sidebar-bits:
 		production-tooltip-time: 136, 51, 16, 16
 		production-tooltip-power: 102, 51, 16, 16
 		production-tooltip-cost: 68, 51, 16, 16
+		indicator: 136, 17, 16, 16
 		indicator-muted: 0, 119, 26, 24
 
 flags:

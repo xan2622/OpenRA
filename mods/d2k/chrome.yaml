@@ -21,6 +21,19 @@ sidebar:
 		purchase-button: 226, 281, 125, 29
 
 
+powerbar-d2k:
+	Inherits: ^Chrome
+	Regions:
+		powerbar-green: 502, 317, 10, 4
+		powerbar-red: 502, 317, 10, 4
+		powerbar-flash: 502, 317, 10, 4
+		powerbar-indicator: 467, 487, 5, 6
+
+powerbar-d2k-bg:
+	Inherits: ^Chrome
+	Regions:
+		background: 492, 314, 10, 198
+
 sidebar-button:
 	Inherits: ^Chrome
 	PanelRegion: 381, 0, 0, 0, 25, 25, 0, 0
@@ -50,6 +63,7 @@ sidebar-bits:
 		production-tooltip-time: 136, 51, 16, 16
 		production-tooltip-power: 102, 51, 16, 16
 		production-tooltip-cost: 68, 51, 16, 16
+		indicator: 136, 17, 16, 16
 		indicator-muted: 0, 119, 26, 24
 
 commandbar:
