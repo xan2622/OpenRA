@@ -465,6 +465,26 @@ Container@PLAYER_WIDGETS:
 							Y: 3
 							ImageCollection: power-icons
 							ImageName: power-normal
+		Container@POWER_BAR_PANEL:
+			Logic: IngamePowerBarTSLogic
+			X: WINDOW_WIDTH - 246
+			Y: 34
+			Width: 10
+			Height: 195
+			Children:
+				Image@POWERBAR_BG:
+					ImageCollection: powerbar-d2k-bg
+					ImageName: background
+				PowerBar@POWERBAR_TS:
+					ImageCollection: powerbar-d2k
+					GreenSegment: powerbar-green
+					RedSegment: powerbar-red
+					SegmentSpacing: 0
+					FlashMinTicks: 0
+					IndicatorImage: powerbar-indicator
+					IndicatorOffsetX: -3
+					TooltipContainer: TOOLTIP_CONTAINER
+					TooltipTemplate: SIMPLE_TOOLTIP
 		Container@SIDEBAR_PRODUCTION:
 			Logic: ClassicProductionLogic
 			X: WINDOW_WIDTH - 226

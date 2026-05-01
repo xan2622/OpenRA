@@ -488,6 +488,27 @@ Container@PLAYER_WIDGETS:
 							ClickThrough: false
 							ImageCollection: sidebar
 							ImageName: background-bottom
+				Container@POWER_BAR_PANEL:
+					Logic: IngamePowerBarTSLogic
+					X: 9
+					Y: 1
+					Width: 10
+					Height: 208
+					Children:
+						ColorBlock@POWERBAR_BG:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							Color: 00000080
+						PowerBar@POWERBAR_TS:
+							Logic: AddFactionSuffixLogic
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
+							ImageCollection: powerbar
+							GreenSegment: powerbar-green
+							RedSegment: powerbar-red
+							SegmentSpacing: 2
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 				LogicTicker@PRODUCTION_TICKER:
 				ProductionPalette@PRODUCTION_PALETTE:
 					X: 24

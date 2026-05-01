@@ -28,13 +28,29 @@ namespace OpenRA.Mods.Common.Widgets
 		public string IndicatorCollection = "sidebar-bits";
 		public string IndicatorImage = "indicator";
 
+		// Procedural indicator (used when IndicatorImage is empty): a solid rectangle
+		// drawn at the drained-power position. Faithful to REDALERT/POWER.CPP, the
+		// marker is always drawn -- including when provided power is 0 (drain_height = 0
+		// just pins it at the bottom of the bar).
+		public int IndicatorWidth = 0;
+		public int IndicatorHeight = 0;
+		public int IndicatorOffsetX = 0;
+		public Color IndicatorColor = Color.White;
+
+		// When true, the bar does not draw its own indicator sprite. Use this with
+		// a sibling ResourceBarIndicatorWidget placed after any overlay widgets so the
+		// indicator can be drawn on top of them.
+		public bool SuppressIndicator = false;
+
 		public Func<float> GetProvided = () => 0;
 		public Func<float> GetUsed = () => 0;
 		public Func<Color> GetBarColor = () => Color.White;
 		readonly EWMA providedLerp = new(0.3f);
 		readonly EWMA usedLerp = new(0.3f);
 		readonly World world;
-		Sprite indicator;
+
+		public Sprite IndicatorSprite { get; private set; }
+		public float LastUsedFrac { get; private set; }
 
 		[ObjectCreator.UseCtor]
 		public ResourceBarWidget(World world)
@@ -48,7 +64,8 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			base.Initialize(args);
 
-			indicator = ChromeProvider.GetImage(IndicatorCollection, IndicatorImage);
+			if (!string.IsNullOrEmpty(IndicatorImage))
+				IndicatorSprite = ChromeProvider.GetImage(IndicatorCollection, IndicatorImage);
 		}
 
 		public override void MouseEntered()
@@ -78,6 +95,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var providedFrac = providedLerp.Update(provided / scaleBy);
 			var usedFrac = usedLerp.Update(used / scaleBy);
+			LastUsedFrac = usedFrac;
 
 			var b = RenderBounds;
 
@@ -85,12 +103,27 @@ namespace OpenRA.Mods.Common.Widgets
 			if (Orientation == ResourceBarOrientation.Vertical)
 			{
 				var tl = new float2(b.X, (int)float2.Lerp(b.Bottom, b.Top, providedFrac));
-				var br = tl + new float2(b.Width, (int)(providedFrac * b.Height));
+				var br = new float2(b.X + b.Width, b.Bottom);
 				Game.Renderer.RgbaColorRenderer.FillRect(tl, br, color);
 
-				var x = (b.Left + b.Right - indicator.Size.X) / 2;
-				var y = float2.Lerp(b.Bottom, b.Top, usedFrac) - indicator.Size.Y / 2;
-				WidgetUtils.DrawSprite(indicator, new float2(x, y));
+				if (!SuppressIndicator)
+				{
+					if (IndicatorSprite != null)
+					{
+						var x = (b.Left + b.Right - IndicatorSprite.Size.X) / 2;
+						var y = float2.Lerp(b.Bottom, b.Top, usedFrac) - IndicatorSprite.Size.Y / 2;
+						WidgetUtils.DrawSprite(IndicatorSprite, new float2(x, y));
+					}
+					else if (IndicatorWidth > 0 && IndicatorHeight > 0)
+					{
+						var x = b.Left + (b.Width - IndicatorWidth) / 2 + IndicatorOffsetX;
+						var y = (int)float2.Lerp(b.Bottom, b.Top, usedFrac) - IndicatorHeight / 2;
+						Game.Renderer.RgbaColorRenderer.FillRect(
+							new float2(x, y),
+							new float2(x + IndicatorWidth, y + IndicatorHeight),
+							IndicatorColor);
+					}
+				}
 			}
 			else
 			{
@@ -98,9 +131,24 @@ namespace OpenRA.Mods.Common.Widgets
 				var br = tl + new float2((int)(providedFrac * b.Width), b.Height);
 				Game.Renderer.RgbaColorRenderer.FillRect(tl, br, color);
 
-				var x = float2.Lerp(b.Left, b.Right, usedFrac) - indicator.Size.X / 2;
-				var y = (b.Bottom + b.Top - indicator.Size.Y) / 2;
-				WidgetUtils.DrawSprite(indicator, new float2(x, y));
+				if (!SuppressIndicator)
+				{
+					if (IndicatorSprite != null)
+					{
+						var x = float2.Lerp(b.Left, b.Right, usedFrac) - IndicatorSprite.Size.X / 2;
+						var y = (b.Bottom + b.Top - IndicatorSprite.Size.Y) / 2;
+						WidgetUtils.DrawSprite(IndicatorSprite, new float2(x, y));
+					}
+					else if (IndicatorWidth > 0 && IndicatorHeight > 0)
+					{
+						var x = (int)float2.Lerp(b.Left, b.Right, usedFrac) - IndicatorWidth / 2;
+						var y = b.Top + (b.Height - IndicatorHeight) / 2;
+						Game.Renderer.RgbaColorRenderer.FillRect(
+							new float2(x, y),
+							new float2(x + IndicatorWidth, y + IndicatorHeight),
+							IndicatorColor);
+					}
+				}
 			}
 		}
 	}

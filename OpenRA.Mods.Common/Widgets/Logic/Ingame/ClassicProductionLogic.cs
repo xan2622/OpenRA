@@ -62,6 +62,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var background = widget.GetOrNull("PALETTE_BACKGROUND");
 			var foreground = widget.GetOrNull("PALETTE_FOREGROUND");
+			var powerBarPanel = widget.GetOrNull("POWER_BAR_PANEL");
+			var powerBar = powerBarPanel?.GetOrNull<ResourceBarWidget>("POWERBAR");
+			var powerBarBorder = powerBarPanel?.GetOrNull("POWERBAR_BORDER");
+			var powerBarBg = powerBarPanel?.GetOrNull("POWERBAR_BG");
+
+			// Preserve any vertical inset between the panel and the bar (e.g. for a
+			// decorative border around the bar).
+			var powerBarHeightInset = powerBarPanel != null && powerBar != null
+				? powerBarPanel.Bounds.Height - powerBar.Bounds.Height
+				: 0;
+			var powerBarBorderHeightInset = powerBarPanel != null && powerBarBorder != null
+				? powerBarPanel.Bounds.Height - powerBarBorder.Bounds.Height
+				: 0;
+			var powerBarBgHeightInset = powerBarPanel != null && powerBarBg != null
+				? powerBarPanel.Bounds.Height - powerBarBg.Bounds.Height
+				: 0;
+
 			if (background != null || foreground != null)
 			{
 				Widget backgroundTemplate = null;
@@ -76,6 +93,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (foreground != null)
 					foregroundTemplate = foreground.Get("ROW_TEMPLATE");
+
+				var powerBarRowHeight = backgroundTemplate?.Bounds.Height ?? foregroundTemplate?.Bounds.Height ?? 0;
 
 				void UpdateBackground(int _, int icons)
 				{
@@ -94,11 +113,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							background.AddChild(row);
 						}
 
-						if (backgroundBottom == null)
-							return;
-
-						backgroundBottom.Bounds.Y = rows * rowHeight;
-						background.AddChild(backgroundBottom);
+						if (backgroundBottom != null)
+						{
+							backgroundBottom.Bounds.Y = rows * rowHeight;
+							background.AddChild(backgroundBottom);
+						}
 					}
 
 					if (foreground != null)
@@ -112,6 +131,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							row.Bounds.Y = i * rowHeight;
 							foreground.AddChild(row);
 						}
+					}
+
+					if (powerBarPanel != null)
+					{
+						powerBarPanel.Bounds.Height = rows * powerBarRowHeight;
+						if (powerBar != null)
+							powerBar.Bounds.Height = rows * powerBarRowHeight - powerBarHeightInset;
+						if (powerBarBorder != null)
+							powerBarBorder.Bounds.Height = rows * powerBarRowHeight - powerBarBorderHeightInset;
+						if (powerBarBg != null)
+							powerBarBg.Bounds.Height = rows * powerBarRowHeight - powerBarBgHeightInset;
 					}
 				}
 

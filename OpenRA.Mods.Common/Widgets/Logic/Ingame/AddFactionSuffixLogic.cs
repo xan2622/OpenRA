@@ -30,6 +30,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				bw.Background += suffix;
 			else if (widget is ImageWidget iw)
 				iw.ImageCollection += suffix;
+			else if (widget is PowerBarWidget pbw)
+				pbw.ImageCollection += suffix;
 			else if (widget is BackgroundWidget bgw)
 				bgw.Background += suffix;
 			else if (widget is TextFieldWidget tfw)

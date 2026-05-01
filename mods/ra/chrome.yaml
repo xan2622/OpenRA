@@ -17,12 +17,12 @@
 sidebar-allies:
 	Inherits: ^Sidebar
 	Regions:
-		radar: 290, 67, 222, 222
-		background-top: 0, 185, 238, 262
+		radar: 307, 101, 205, 205
+		background-top: 0, 200, 238, 262
 		background-moneybin: 0, 85, 238, 28
-		background-iconbg: 12, 227, 190, 47
-		background-iconrow: 0, 116, 238, 47
-		background-bottom: 0, 166, 238, 8
+		background-iconbg: 26, 242, 190, 47
+		background-iconrow: 0, 116, 252, 47
+		background-bottom: 0, 166, 252, 8
 		background-supportoverlay: 12, 324, 64, 48
 
 sidebar-button-allies:
@@ -44,6 +44,10 @@ sidebar-button-allies-highlighted-pressed:
 sidebar-button-allies-disabled:
 	Inherits: ^Sidebar
 	PanelRegion: 260, 484, 5, 5, 18, 18, 5, 5
+
+powerbar-border:
+	Inherits: ^Sidebar
+	PanelRegion: 260, 484, 2, 2, 24, 24, 2, 2
 sidebar-button-allies-highlighted-disabled:
 	Inherits: sidebar-button-allies-disabled
 
@@ -75,12 +79,12 @@ command-button-allies-highlighted-disabled:
 sidebar-soviet:
 	Inherits: ^Sidebar
 	Regions:
-		radar: 290, 290, 222, 222
-		background-top: 0, 185, 238, 262
+		radar: 307, 307, 205, 205
+		background-top: 0, 200, 238, 262
 		background-moneybin: 0, 54, 238, 28
-		background-iconbg: 12, 275, 190, 47
-		background-iconrow: 0, 116, 238, 47
-		background-bottom: 0, 166, 238, 8
+		background-iconbg: 26, 290, 190, 47
+		background-iconrow: 0, 116, 252, 47
+		background-bottom: 0, 166, 252, 8
 		background-supportoverlay: 77, 324, 64, 48
 
 sidebar-button-soviet:
@@ -135,6 +139,7 @@ sidebar-bits:
 		production-tooltip-time: 136, 51, 16, 16
 		production-tooltip-power: 102, 51, 16, 16
 		production-tooltip-cost: 68, 51, 16, 16
+		indicator: 136, 17, 16, 16
 		indicator-muted: 221, 17, 26, 24
 
 commandbar:
@@ -244,7 +249,7 @@ command-icons-highlighted:
 sidebar-observer:
 	Inherits: ^Sidebar
 	Regions:
-		background: 0, 185, 238, 287
+		background: 0, 200, 238, 272
 		replay-bottom: 0, 472, 238, 40
 		observer-bottom: 0, 176, 238, 8
 
