@@ -52,6 +52,17 @@ namespace OpenRA.Mods.Common.Widgets
 		public string IndicatorImage = "";
 		public int IndicatorOffsetX = 0;
 
+		// Optional small notch sprites drawn centered inside every slot, on top of the
+		// border segment, to reproduce the Dune 2000 power bar look (a green notch for
+		// filled slots, a gray notch for empty slots). Left empty, no notch is drawn.
+		public string InnerFilledSegment = "";
+		public string InnerEmptySegment = "";
+
+		// Optional cap sprites drawn once at the very top and bottom of the bar, on top
+		// of the topmost/bottommost slot, regardless of the current power level.
+		public string TopCapSegment = "";
+		public string BottomCapSegment = "";
+
 		// Vertical gap in pixels left between two stacked segment sprites, used to
 		// reproduce the notched appearance of the original power bar.
 		public int SegmentSpacing = 0;
@@ -195,16 +206,89 @@ namespace OpenRA.Mods.Common.Widgets
 			var x = b.X + (b.Width - (int)green.Size.X) / 2;
 			var bottom = b.Bottom;
 
+			// When a cap sprite is configured, it takes the place of the outermost slot
+			// instead of being drawn on top of it (which would leave a sliver of the
+			// notch border visible past the shorter cap sprite). Reserve that slot here
+			// so the regular notch loops skip it.
+			var bottomCapReserved = string.IsNullOrEmpty(BottomCapSegment) ? 0 : 1;
+			var topCapReserved = string.IsNullOrEmpty(TopCapSegment) ? 0 : 1;
+			var firstSlot = Math.Min(bottomCapReserved, totalSlots);
+			var lastSlot = Math.Max(firstSlot, totalSlots - topCapReserved);
+
 			for (var i = 0; i < redSlots; i++)
 			{
+				if (i < firstSlot || i >= lastSlot)
+					continue;
+
 				var y = bottom - (i + 1) * slotHeight + (slotHeight - segmentHeight);
 				WidgetUtils.DrawSprite(red, new float2(x, y));
 			}
 
 			for (var i = 0; i < greenSlots; i++)
 			{
-				var y = bottom - (redSlots + i + 1) * slotHeight + (slotHeight - segmentHeight);
+				var slot = redSlots + i;
+				if (slot < firstSlot || slot >= lastSlot)
+					continue;
+
+				var y = bottom - (slot + 1) * slotHeight + (slotHeight - segmentHeight);
 				WidgetUtils.DrawSprite(green, new float2(x, y));
+			}
+
+			// Empty slots above the filled portion: draw the same border segment so the
+			// bar shows its full notched outline regardless of the current power level.
+			var filledSlots = redSlots + greenSlots;
+			for (var i = filledSlots; i < totalSlots; i++)
+			{
+				if (i < firstSlot || i >= lastSlot)
+					continue;
+
+				var y = bottom - (i + 1) * slotHeight + (slotHeight - segmentHeight);
+				WidgetUtils.DrawSprite(green, new float2(x, y));
+			}
+
+			// Inner notch sprites, drawn centered inside every slot on top of the border segment.
+			if (!string.IsNullOrEmpty(InnerFilledSegment) || !string.IsNullOrEmpty(InnerEmptySegment))
+			{
+				var innerFilled = string.IsNullOrEmpty(InnerFilledSegment) ? null : getImageCache.Update((ImageCollection, InnerFilledSegment));
+				var innerEmpty = string.IsNullOrEmpty(InnerEmptySegment) ? null : getImageCache.Update((ImageCollection, InnerEmptySegment));
+
+				for (var i = firstSlot; i < lastSlot; i++)
+				{
+					var inner = i < filledSlots ? innerFilled : innerEmpty;
+					if (inner == null)
+						continue;
+
+					var y = bottom - (i + 1) * slotHeight + (slotHeight - segmentHeight);
+					var innerX = b.X + (b.Width - (int)inner.Size.X) / 2;
+					var innerY = y + (segmentHeight - (int)inner.Size.Y) / 2;
+					WidgetUtils.DrawSprite(inner, new float2(innerX, innerY));
+				}
+			}
+
+			// Permanent top and bottom caps, drawn once in place of the topmost/bottommost
+			// slot regardless of the current power level.
+			if (!string.IsNullOrEmpty(TopCapSegment))
+			{
+				var topCap = getImageCache.Update((ImageCollection, TopCapSegment));
+				if (topCap != null)
+				{
+					// Stretch the cap to fill its whole reserved slot, so no sliver of
+					// background shows between the cap and the next notch.
+					var topY = bottom - totalSlots * slotHeight;
+					var topCapX = b.X + (b.Width - (int)topCap.Size.X) / 2;
+					WidgetUtils.DrawSprite(topCap, new float2(topCapX, topY), new float2(topCap.Size.X, slotHeight));
+				}
+			}
+
+			if (!string.IsNullOrEmpty(BottomCapSegment))
+			{
+				var bottomCap = getImageCache.Update((ImageCollection, BottomCapSegment));
+				if (bottomCap != null)
+				{
+					var bottomCapY = bottom - slotHeight;
+					var bottomCapX = b.X + (b.Width - (int)bottomCap.Size.X) / 2;
+					WidgetUtils.DrawSprite(bottomCap, new float2(bottomCapX, bottomCapY), new float2(bottomCap.Size.X, slotHeight));
+				}
 			}
 
 			// Flash overlay on the topmost filled segment.
