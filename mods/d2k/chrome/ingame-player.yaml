@@ -279,18 +279,18 @@ Container@PLAYER_WIDGETS:
 					Text: label-mute-indicator
 					Contrast: true
 		Image@SIDEBAR_BACKGROUND_TOP:
-			X: WINDOW_WIDTH - 226
+			X: WINDOW_WIDTH - 212
 			Y: 0
-			Width: 226
-			Height: 295
+			Width: 212
+			Height: 385
 			ImageCollection: sidebar
 			ImageName: background-top
 			ClickThrough: false
 			Children:
 				Container@TOP_BUTTONS:
 					Logic: MenuButtonsChromeLogic
-					X: 16
-					Y: 236
+					X: 7
+					Y: 222
 					Children:
 						Button@REPAIR_BUTTON:
 							Logic: RepairOrderButtonLogic
@@ -382,22 +382,22 @@ Container@PLAYER_WIDGETS:
 						ColorBlock@RADAR_FADETOBLACK:
 							X: 12
 							Y: 34
-							Width: 202
-							Height: 202
+							Width: 188
+							Height: 188
 						Radar@RADAR_MINIMAP:
 							WorldInteractionController: INTERACTION_CONTROLLER
 							X: 12
 							Y: 34
-							Width: 202
-							Height: 202
+							Width: 188
+							Height: 188
 							SoundUp: RadarUp
 							SoundDown: RadarDown
 							Children:
 						VideoPlayer@PLAYER:
 							X: 12
 							Y: 32
-							Width: 202
-							Height: 202
+							Width: 188
+							Height: 188
 							Skippable: false
 						Container@MINIMAP_OVERLAY:
 							X: 12
@@ -411,25 +411,25 @@ Container@PLAYER_WIDGETS:
 									ImageCollection: minimap-overlay
 									ImageName: top
 								Image@TOPRIGHT:
-									X: 195
+									X: 181
 									ImageCollection: minimap-overlay
 									ImageName: top-right
 								Image@LEFT:
-									Y: 94
+									Y: 87
 									ImageCollection: minimap-overlay
 									ImageName: left
 								Image@RIGHT:
-									X: 197
-									Y: 94
+									X: 183
+									Y: 87
 									ImageCollection: minimap-overlay
 									ImageName: right
 								Image@BOTTOMLEFT:
-									Y: 195
+									Y: 181
 									ImageCollection: minimap-overlay
 									ImageName: bottom-left
 								Image@BOTTOMRIGHT:
-									X: 195
-									Y: 195
+									X: 181
+									Y: 181
 									ImageCollection: minimap-overlay
 									ImageName: bottom-right
 				Label@GAME_TIMER:
@@ -465,44 +465,25 @@ Container@PLAYER_WIDGETS:
 							Y: 3
 							ImageCollection: power-icons
 							ImageName: power-normal
-		Container@POWER_BAR_PANEL:
-			Logic: IngamePowerBarTSLogic
-			X: WINDOW_WIDTH - 246
-			Y: 34
-			Width: 10
-			Height: 195
-			Children:
-				Image@POWERBAR_BG:
-					ImageCollection: powerbar-d2k-bg
-					ImageName: background
-				PowerBar@POWERBAR_TS:
-					ImageCollection: powerbar-d2k
-					GreenSegment: powerbar-green
-					RedSegment: powerbar-red
-					SegmentSpacing: 0
-					FlashMinTicks: 0
-					IndicatorImage: powerbar-indicator
-					IndicatorOffsetX: -3
-					TooltipContainer: TOOLTIP_CONTAINER
-					TooltipTemplate: SIMPLE_TOOLTIP
 		Container@SIDEBAR_PRODUCTION:
 			Logic: ClassicProductionLogic
-			X: WINDOW_WIDTH - 226
-			Y: 279
-			Width: 226
+			X: WINDOW_WIDTH - 212
+			Y: 265
+			Width: 212
 			Height: 250
 			Children:
 				Container@PALETTE_BACKGROUND:
+					Y: 27
 					Children:
 						Image@ROW_TEMPLATE:
-							Width: 226
+							Width: 212
 							Height: 48
 							ClickThrough: false
 							ImageCollection: sidebar
 							ImageName: background-iconrow
 						Image@BOTTOM_CAP:
-							Width: 250
-							Height: 13
+							Width: 212
+							Height: 27
 							ClickThrough: false
 							ImageCollection: sidebar
 							ImageName: background-bottom
@@ -511,16 +492,16 @@ Container@PLAYER_WIDGETS:
 									Logic: PurchaseWidgetLogic
 									Children:
 										Button@PURCHASE_BUTTON:
-											X: PARENT_LEFT + 65
-											Y: PARENT_TOP + 1
+											X: PARENT_LEFT + 46
+											Y: PARENT_TOP
 											Width: 125
-											Height: 29
+											Height: 26
 											Font: Bold
 											Background: button-purchase
 											TooltipText: purchase-panel-button-tooltip
 											TooltipContainer: TOOLTIP_CONTAINER
 										Label@DELIVERY_IN:
-											X: PARENT_TOP + 80
+											X: PARENT_TOP + 58
 											Y: PARENT_LEFT + 3
 											TextColor: FFD091
 											Width: 100
@@ -530,8 +511,8 @@ Container@PLAYER_WIDGETS:
 											Text: purchase-panel-label-delivery
 				LogicTicker@PRODUCTION_TICKER:
 				ProductionPalette@PRODUCTION_PALETTE:
-					X: 39
-					Y: 1
+					X: 25
+					Y: 28
 					TooltipContainer: TOOLTIP_CONTAINER
 					ReadyText: productionpalette-sidebar-production-palette.ready
 					HoldText: productionpalette-sidebar-production-palette.hold
@@ -545,12 +526,13 @@ Container@PLAYER_WIDGETS:
 					SelectProductionBuildingHotkey: SelectProductionBuilding
 					ClickSound: TabClick
 				Container@PRODUCTION_TYPES:
-					X: 6
-					Y: 2
-					Width: 25
-					Height: 274
+					X: 10
+					Y: -3
+					Width: 193
+					Height: 27
 					Children:
 						ProductionTypeButton@BUILDING:
+							X: 0
 							Width: 25
 							Height: 25
 							VisualHeight: 0
@@ -565,7 +547,7 @@ Container@PLAYER_WIDGETS:
 									Y: 5
 									ImageCollection: production-icons
 						ProductionTypeButton@INFANTRY:
-							Y: 62
+							X: 56
 							Width: 25
 							Height: 25
 							VisualHeight: 0
@@ -580,7 +562,7 @@ Container@PLAYER_WIDGETS:
 									Y: 5
 									ImageCollection: production-icons
 						ProductionTypeButton@VEHICLE:
-							Y: 93
+							X: 84
 							Width: 25
 							Height: 25
 							VisualHeight: 0
@@ -595,7 +577,7 @@ Container@PLAYER_WIDGETS:
 									Y: 5
 									ImageCollection: production-icons
 						ProductionTypeButton@TANKS:
-							Y: 124
+							X: 112
 							Width: 25
 							Height: 25
 							VisualHeight: 0
@@ -610,7 +592,7 @@ Container@PLAYER_WIDGETS:
 									Y: 5
 									ImageCollection: production-icons
 						ProductionTypeButton@AIRCRAFT:
-							Y: 155
+							X: 140
 							Width: 25
 							Height: 25
 							VisualHeight: 0
@@ -625,7 +607,7 @@ Container@PLAYER_WIDGETS:
 									Y: 5
 									ImageCollection: production-icons
 						ProductionTypeButton@STARPORT:
-							Y: 186
+							X: 168
 							Width: 25
 							Height: 25
 							VisualHeight: 0
@@ -640,7 +622,7 @@ Container@PLAYER_WIDGETS:
 									Y: 5
 									ImageCollection: production-icons
 						ProductionTypeButton@UPGRADE: # Upgrade is defined after others so it won't be automatically selected after sell or at game start.
-							Y: 31
+							X: 28
 							Width: 25
 							Height: 25
 							VisualHeight: 0
@@ -654,34 +636,59 @@ Container@PLAYER_WIDGETS:
 									X: 5
 									Y: 5
 									ImageCollection: production-icons
-						Button@SCROLL_UP_BUTTON:
-							Y: 217
-							Width: 25
-							Height: 25
-							VisualHeight: 0
-							Background: sidebar-button
-							TooltipText: button-production-types-scroll-up-tooltip
+				Button@SCROLL_UP_BUTTON:
+					X: 0
+					Y: 315
+					Width: 25
+					Height: 25
+					VisualHeight: 0
+					Background: sidebar-button
+					TooltipText: button-production-types-scroll-up-tooltip
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 5
+							ImageCollection: scrollpanel-decorations
+							ImageName: up
+				Button@SCROLL_DOWN_BUTTON:
+					X: PARENT_WIDTH - WIDTH
+					Y: 315
+					Width: 25
+					Height: 25
+					VisualHeight: 0
+					Background: sidebar-button
+					TooltipText: button-production-types-scroll-down-tooltip
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 5
+							Y: 5
+							ImageCollection: scrollpanel-decorations
+							ImageName: down
+				Container@POWER_BAR_PANEL:
+					Logic: IngamePowerBarTSLogic
+					X: 8
+					Y: 27
+					Width: 10
+					Height: 240
+					Children:
+						PowerBar@POWERBAR_TS:
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT + 12
+							ImageCollection: powerbar-d2k
+							GreenSegment: powerbar-green
+							RedSegment: powerbar-red
+							InnerFilledSegment: powerbar-notch-filled
+							InnerEmptySegment: powerbar-notch-empty
+							TopCapSegment: powerbar-cap-top
+							BottomCapSegment: powerbar-cap-bottom
+							SegmentSpacing: 0
+							FlashMinTicks: 0
+							IndicatorImage: powerbar-indicator
+							IndicatorOffsetX: -3
 							TooltipContainer: TOOLTIP_CONTAINER
-							Children:
-								Image@ICON:
-									X: 5
-									Y: 5
-									ImageCollection: scrollpanel-decorations
-									ImageName: up
-						Button@SCROLL_DOWN_BUTTON:
-							Y: 248
-							Width: 25
-							Height: 25
-							VisualHeight: 0
-							Background: sidebar-button
-							TooltipText: button-production-types-scroll-down-tooltip
-							TooltipContainer: TOOLTIP_CONTAINER
-							Children:
-								Image@ICON:
-									X: 5
-									Y: 5
-									ImageCollection: scrollpanel-decorations
-									ImageName: down
+							TooltipTemplate: SIMPLE_TOOLTIP
 		Container@HPF_ROOT:
 			Logic: LoadIngameHierarchicalPathFinderOverlayLogic
 			X: WINDOW_WIDTH - WIDTH - 231

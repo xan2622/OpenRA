@@ -15,9 +15,9 @@
 sidebar:
 	Inherits: ^Chrome
 	Regions:
-		background-top: 0, 0, 226, 295
-		background-iconrow: 0, 295, 226, 48
-		background-bottom: 0, 343, 226, 28
+		background-top: 0, 0, 212, 306
+		background-iconrow: 0, 306, 212, 48
+		background-bottom: 0, 358, 212, 27
 		purchase-button: 226, 281, 125, 29
 
 
@@ -28,6 +28,10 @@ powerbar-d2k:
 		powerbar-red: 502, 317, 10, 4
 		powerbar-flash: 502, 317, 10, 4
 		powerbar-indicator: 467, 487, 5, 6
+		powerbar-notch-filled: 468, 503, 4, 4
+		powerbar-notch-empty: 468, 508, 4, 4
+		powerbar-cap-top: 502, 314, 10, 3
+		powerbar-cap-bottom: 502, 509, 10, 3
 
 powerbar-d2k-bg:
 	Inherits: ^Chrome
@@ -36,11 +40,11 @@ powerbar-d2k-bg:
 
 sidebar-button:
 	Inherits: ^Chrome
-	PanelRegion: 381, 0, 0, 0, 25, 25, 0, 0
+	PanelRegion: 377, 0, 0, 0, 25, 25, 0, 0
 	PanelSides: Center
 sidebar-button-pressed:
 	Inherits: ^Chrome
-	PanelRegion: 407, 0, 0, 0, 25, 25, 0, 0
+	PanelRegion: 402, 0, 0, 0, 25, 25, 0, 0
 	PanelSides: Center
 sidebar-button-hover:
 	Inherits: sidebar-button-pressed
@@ -52,7 +56,7 @@ sidebar-button-highlighted-pressed:
 	Inherits: sidebar-button-pressed
 sidebar-button-disabled:
 	Inherits: ^Chrome
-	PanelRegion: 433, 0, 0, 0, 25, 25, 0, 0
+	PanelRegion: 427, 0, 0, 0, 25, 25, 0, 0
 	PanelSides: Center
 sidebar-button-highlighted-disabled:
 	Inherits: sidebar-button-disabled
@@ -75,7 +79,7 @@ minimap-overlay:
 	Inherits: ^Chrome
 	Regions:
 		top-left: 239, 15, 7, 7
-		top: 239, 0, 141, 4
+		top: 239, 0, 127, 4
 		top-right: 247, 15, 7, 7
 		left: 233, 0, 5, 22
 		right: 227, 0, 5, 22
